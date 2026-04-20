@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BarakaLink - Find Ustaz</title>
+
+  <!-- Telegram -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="mainView">
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="app-name">BarakaLink</div>
+    <div class="location">📍 Bole ▼</div>
+  </div>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <input type="text" placeholder="Search ustaz or subject...">
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <button class="filter-btn">Female</button>
+    <button class="filter-btn">Male</button>
+    <button class="filter-btn">Nearby</button>
+    <button class="filter-btn">Hifz</button>
+    <button class="filter-btn">Tajweed</button>
+  </div>
+
+  <!-- Popular -->
+  <div class="section">
+    <h3>🔥 Popular Near You</h3>
+    <div class="horizontal-scroll">
+      <div class="small">
+        <div class="avatar"></div>
+        <p>Ahmed</p>
+        <p>⭐ 4.8</p>
+      </div>
+      <div class="small">
+        <div class="avatar"></div>
+        <p>Fatima</p>
+        <p>⭐ 4.9</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ustaz List -->
+  <div class="ustaz-list">
+
+    <div class="ustaz-card">
+      <div class="avatar"></div>
+
+      <div class="ustaz-info">
+        <div class="top-row">
+          <h4 class="name">Ahmed Ali ✔️</h4>
+          <span class="rating">⭐ 4.7</span>
+        </div>
+
+        <p class="subjects">Tajweed • Hifz</p>
+        <p class="location-text">📍 Bole</p>
+        <p class="mosque">🕌 Anwar Mosque</p>
+        <p class="status available">🟢 Available</p>
+
+        <div class="actions">
+          <button class="chat-btn">Chat</button>
+          <button class="view-btn">View</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Auth Modal -->
+<div class="modal" id="authModal">
+  <h3>Sign up to contact</h3>
+  <p>Create an account to chat with this ustaz</p>
+  <button class="chat-btn">Sign up as Parent</button>
+  <button class="view-btn" id="closeModal">Cancel</button>
+</div>
+
+<!-- JS -->
+<script src="script.js"></script>
+
+</body>
+</html>
