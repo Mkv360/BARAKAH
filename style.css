@@ -1,0 +1,171 @@
+:root {
+  --bg: #0b132b;
+  --card: rgba(255,255,255,0.08);
+  --muted: #9aa4b2;
+  --primary: #2ecc71;
+  --text: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(180deg, #0b132b, #1c2541);
+  color: var(--text);
+}
+
+#mainView {
+  padding: 14px;
+  max-width: 420px;
+  margin: auto;
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-name {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.location {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* Search */
+.search-bar input {
+  width: 100%;
+  padding: 11px;
+  border-radius: 20px;
+  border: none;
+  margin: 14px 0;
+  outline: none;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 15px;
+}
+
+.filter-btn {
+  padding: 7px 12px;
+  border-radius: 20px;
+  border: none;
+  background: #1c2541;
+  color: #fff;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: var(--primary);
+  color: #000;
+}
+
+/* Section */
+.section h3 {
+  font-size: 15px;
+}
+
+.horizontal-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.small {
+  min-width: 90px;
+  text-align: center;
+  background: var(--card);
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  background: #ccc;
+  border-radius: 50%;
+  margin: auto;
+}
+
+/* Cards */
+.ustaz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ustaz-card {
+  display: flex;
+  gap: 12px;
+  background: var(--card);
+  padding: 12px;
+  border-radius: 14px;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name {
+  margin: 0;
+}
+
+.subjects,
+.location-text,
+.mosque,
+.status {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.status.available {
+  color: var(--primary);
+}
+
+/* Buttons */
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+}
+
+.chat-btn {
+  background: var(--primary);
+  color: #000;
+}
+
+.view-btn {
+  background: #1c2541;
+  color: #fff;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #111827;
+  padding: 20px;
+  display: none;
+}
