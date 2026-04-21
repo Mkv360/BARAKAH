@@ -16,44 +16,54 @@
 
 <div id="mainView">
 
-  <!-- Top Bar -->
+  <!-- 🔝 TOP BAR -->
   <div class="top-bar">
-    <div class="app-name">BarakaLink</div>
-    <div class="location">📍 Bole ▼</div>
+    <div class="top-left">
+      <h2 class="app-name">BarakaLink</h2>
+      <p class="location">📍 Bole ▼</p>
+    </div>
+
+    <div class="top-icons">
+      <span class="icon">🌙</span>
+      <span class="icon">👤</span>
+    </div>
   </div>
 
-  <!-- Search -->
+  <!-- 🔍 SEARCH -->
   <div class="search-bar">
-    <input type="text" placeholder="Search ustaz or subject...">
+    <input type="text" placeholder="Search Tajweed, Hifz, Female ustaz...">
   </div>
 
-  <!-- Filters -->
+  <!-- ⚡ FILTERS -->
   <div class="filters">
+    <button class="filter-btn active">Nearby</button>
     <button class="filter-btn">Female</button>
     <button class="filter-btn">Male</button>
-    <button class="filter-btn">Nearby</button>
     <button class="filter-btn">Hifz</button>
     <button class="filter-btn">Tajweed</button>
   </div>
 
-  <!-- Popular -->
+  <!-- 🔥 POPULAR -->
   <div class="section">
     <h3>🔥 Popular Near You</h3>
     <div class="horizontal-scroll">
-      <div class="small">
+
+      <div class="small-card">
         <div class="avatar"></div>
-        <p>Ahmed</p>
-        <p>⭐ 4.8</p>
+        <p class="small-name">Ahmed</p>
+        <p class="small-rating">⭐ 4.8</p>
       </div>
-      <div class="small">
+
+      <div class="small-card">
         <div class="avatar"></div>
-        <p>Fatima</p>
-        <p>⭐ 4.9</p>
+        <p class="small-name">Fatima</p>
+        <p class="small-rating">⭐ 4.9</p>
       </div>
+
     </div>
   </div>
 
-  <!-- Ustaz List -->
+  <!-- 🧑‍🏫 USTAZ LIST -->
   <div class="ustaz-list">
 
     <div class="ustaz-card">
@@ -66,9 +76,10 @@
         </div>
 
         <p class="subjects">Tajweed • Hifz</p>
-        <p class="location-text">📍 Bole</p>
+        <p class="location-text">📍 Bole (1.2 km)</p>
         <p class="mosque">🕌 Anwar Mosque</p>
-        <p class="status available">🟢 Available</p>
+
+        <p class="status available">🟢 Available Today</p>
 
         <div class="actions">
           <button class="chat-btn">Chat</button>
@@ -81,12 +92,23 @@
 
 </div>
 
-<!-- Auth Modal -->
+<!-- 🔐 AUTH MODAL -->
 <div class="modal" id="authModal">
-  <h3>Sign up to contact</h3>
-  <p>Create an account to chat with this ustaz</p>
-  <button class="chat-btn">Sign up as Parent</button>
-  <button class="view-btn" id="closeModal">Cancel</button>
+  <div class="modal-content">
+    <h3>Sign up to contact</h3>
+    <p>Create an account to chat with this ustaz</p>
+    <button class="chat-btn">Sign up as Parent</button>
+    <button class="view-btn" id="closeModal">Cancel</button>
+  </div>
+</div>
+
+<!-- 🔻 FLOATING BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="nav-item active">🏠</div>
+  <div class="nav-item">🧑‍🏫</div>
+  <div class="nav-item">📥</div>
+  <div class="nav-item">ℹ️</div>
+  <div class="nav-item">💬</div>
 </div>
 
 <!-- JS -->
