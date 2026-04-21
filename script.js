@@ -1,77 +1,121 @@
 // ==============================
+// INIT APP
+// ==============================
+document.addEventListener("DOMContentLoaded", () => {
+  initFilters();
+  initNav();
+  initModal();
+  initChatButtons();
+  initViewButtons();
+  initSearch();
+  initTheme();
+});
+
+
+// ==============================
 // STATE
 // ==============================
 let loggedIn = false;
 
 
 // ==============================
-// FILTER BUTTONS (only one active per type)
+// HERO SCROLL
 // ==============================
-const filterButtons = document.querySelectorAll(".filter-btn");
+function scrollToList() {
+  const list = document.querySelector(".ustaz-list");
+  if (list) {
+    list.scrollIntoView({ behavior: "smooth" });
+  }
+}
 
-filterButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    btn.classList.toggle("active");
+
+// ==============================
+// FILTER SYSTEM (BETTER UX)
+// ==============================
+function initFilters() {
+  const filterButtons = document.querySelectorAll(".filter-btn");
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      // Remove active from all
+      filterButtons.forEach(b => b.classList.remove("active"));
+
+      // Activate clicked
+      btn.classList.add("active");
+
+      console.log("Filter selected:", btn.innerText);
+
+      // Future: filter data here
+    });
   });
-});
+}
 
 
 // ==============================
 // BOTTOM NAVIGATION
 // ==============================
-const navItems = document.querySelectorAll(".nav-item");
+function initNav() {
+  const navItems = document.querySelectorAll(".nav-item");
 
-navItems.forEach(item => {
-  item.addEventListener("click", () => {
-    navItems.forEach(i => i.classList.remove("active"));
-    item.classList.add("active");
+  navItems.forEach(item => {
+    item.addEventListener("click", () => {
+      navItems.forEach(i => i.classList.remove("active"));
+      item.classList.add("active");
 
-    // (Future) Switch views here
-    console.log("Navigated to:", item.innerText);
+      console.log("Navigated to:", item.innerText);
+
+      // Future: switch pages/views
+    });
   });
-});
+}
 
 
 // ==============================
-// MODAL CONTROL
+// MODAL CONTROL (IMPROVED)
 // ==============================
-const authModal = document.getElementById("authModal");
-const closeModalBtn = document.getElementById("closeModal");
+function initModal() {
+  const authModal = document.getElementById("authModal");
+  const closeModalBtn = document.getElementById("closeModal");
 
-function openModal() {
-  authModal.style.display = "block";
-}
+  window.openModal = function () {
+    authModal.style.display = "block";
+  };
 
-function closeModal() {
-  authModal.style.display = "none";
-}
+  window.closeModal = function () {
+    authModal.style.display = "none";
+  };
 
-closeModalBtn.addEventListener("click", closeModal);
-
-// Close modal when clicking outside
-window.addEventListener("click", (e) => {
-  if (e.target === authModal) {
-    closeModal();
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener("click", closeModal);
   }
-});
 
-
-// ==============================
-// CHAT BUTTONS (AUTH GATE)
-// ==============================
-const chatButtons = document.querySelectorAll(".chat-btn");
-
-chatButtons.forEach(btn => {
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation(); // prevent unwanted bubbling
-
-    if (!loggedIn) {
-      openModal();
-    } else {
-      openTelegramChat();
+  // Click outside modal closes it
+  window.addEventListener("click", (e) => {
+    if (e.target === authModal) {
+      closeModal();
     }
   });
-});
+}
+
+
+// ==============================
+// CHAT BUTTONS (AUTH REQUIRED)
+// ==============================
+function initChatButtons() {
+  const chatButtons = document.querySelectorAll(".chat-btn");
+
+  chatButtons.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      if (!loggedIn) {
+        openModal();
+      } else {
+        openTelegramChat();
+      }
+    });
+  });
+}
 
 
 // ==============================
@@ -80,7 +124,7 @@ chatButtons.forEach(btn => {
 function openTelegramChat() {
   alert("Opening Telegram chat...");
 
-  // Later replace with real link:
+  // Replace later:
   // window.open("https://t.me/username");
 }
 
@@ -88,43 +132,57 @@ function openTelegramChat() {
 // ==============================
 // VIEW PROFILE BUTTON
 // ==============================
-const viewButtons = document.querySelectorAll(".view-btn");
+function initViewButtons() {
+  const viewButtons = document.querySelectorAll(".view-btn");
 
-viewButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    console.log("Open Ustaz Profile");
+  viewButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      console.log("Open Ustaz Profile");
 
-    // Future:
-    // loadProfilePage(ustazId);
-  });
-});
-
-
-// ==============================
-// DARK MODE TOGGLE (BASIC)
-// ==============================
-const themeToggle = document.querySelector(".icon");
-
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("light-mode");
+      // Future:
+      // loadProfilePage(id)
+    });
   });
 }
 
 
 // ==============================
-// SEARCH (BASIC FILTER)
+// SEARCH SYSTEM (IMPROVED)
 // ==============================
-const searchInput = document.querySelector(".search-bar input");
+function initSearch() {
+  const searchInput = document.querySelector(".search-bar input");
 
-if (searchInput) {
+  if (!searchInput) return;
+
   searchInput.addEventListener("input", () => {
     const value = searchInput.value.toLowerCase();
     const cards = document.querySelectorAll(".ustaz-card");
 
     cards.forEach(card => {
-      const text = card.innerText.toLowerCase();
-      card.style.display = text.includes(value) ? "flex" : "none";
+      const name = card.querySelector(".name")?.innerText.toLowerCase() || "";
+      const subjects = card.querySelector(".subjects")?.innerText.toLowerCase() || "";
+
+      if (name.includes(value) || subjects.includes(value)) {
+        card.style.display = "flex";
+      } else {
+        card.style.display = "none";
+      }
     });
+  });
+}
+
+
+// ==============================
+// DARK MODE TOGGLE (IMPROVED)
+// ==============================
+function initTheme() {
+  const themeToggle = document.querySelector(".icon");
+
+  if (!themeToggle) return;
+
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("light-mode");
+
+    console.log("Theme toggled");
   });
 }
