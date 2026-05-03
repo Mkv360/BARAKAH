@@ -14,116 +14,65 @@
 
 <body>
 
-<div id="mainView">
+<div class="container">
 
   <!-- TOP -->
   <div class="top-bar">
-    <div>
-      <h2 class="app-name">Baraka<span class="green">Link</span></h2>
+    <div class="logo">Baraka<span>Link</span></div>
 
-      <div class="location-box" id="locationBox">
-        <i class="fa-solid fa-location-dot"></i>
-        <span id="selectedLocation">Bole</span>
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
-    </div>
-
-    <div class="top-icons">
-      <span class="icon theme-toggle">🌙</span>
-
-      <div class="lang-switch">
-        <span class="lang active" data-lang="en">EN</span>
-        <span class="lang" data-lang="am">አማ</span>
-      </div>
+    <div class="auth-buttons">
+      <button class="login">Login</button>
+      <button class="signup">Sign Up</button>
     </div>
   </div>
 
-  <!-- LOCATION DROPDOWN -->
-  <div class="location-dropdown" id="locationDropdown">
-    <div class="location-item" data-value="Bole">Bole</div>
-    <div class="location-item" data-value="Yeka">Yeka</div>
-    <div class="location-item" data-value="Kirkos">Kirkos</div>
-    <div class="location-item" data-value="Kolfe">Kolfe</div>
-  </div>
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-badge">🕌 Find Trusted Quran Teachers Near You</div>
-
-    <h1 class="hero-title">
-      Connecting You with Qualified Quran Ustaz Easily.
-    </h1>
-
-    <p class="hero-subtitle">
-      Find trusted, nearby Quran teachers quickly and safely.
-    </p>
-
-    <button class="hero-btn" id="findBtn">Find Ustaz ↓</button>
+  <!-- LOCATION -->
+  <div class="location">
+    <i class="fa-solid fa-location-dot"></i>
+    Bole, Addis Ababa
   </div>
 
   <!-- SEARCH -->
-  <div class="search-bar">
+  <div class="search">
     <input type="text" id="searchInput" placeholder="Search ustaz or subject...">
   </div>
 
   <!-- FILTERS -->
   <div class="filters">
-    <button class="filter-btn active">All</button>
-    <button class="filter-btn">Male</button>
-    <button class="filter-btn">Female</button>
-    <button class="filter-btn">Hifz</button>
-    <button class="filter-btn">Tajweed</button>
+    <div class="filter active">All</div>
+    <div class="filter">Male</div>
+    <div class="filter">Female</div>
+    <div class="filter">Hifz</div>
+    <div class="filter">Tajweed</div>
   </div>
 
   <!-- POPULAR -->
   <div class="section">
     <div class="section-header">
-      <h3>🔥 Popular Near You</h3>
-      <span class="see-all" id="seeAllBtn">See all</span>
+      <h3>Popular Near You</h3>
+      <span class="see-all">See all</span>
     </div>
 
-    <div class="popular-wrapper">
-      <button class="scroll-btn left" id="scrollLeft">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-
-      <div class="horizontal-scroll" id="popularList"></div>
-
-      <button class="scroll-btn right" id="scrollRight">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </div>
+    <div class="popular" id="popularList"></div>
   </div>
 
-  <!-- USTAZ LIST -->
+  <!-- LIST -->
   <div class="section">
-    <div class="section-header">
-      <h3>🧑‍🏫 Available Ustaz</h3>
-    </div>
-
-    <div class="ustaz-list" id="ustazList"></div>
+    <h3>All Ustaz</h3>
+    <div id="ustazList"></div>
   </div>
 
-</div>
-
-<!-- MODAL -->
-<div class="modal" id="authModal">
-  <div class="modal-content">
-    <h3>Sign up</h3>
-    <p>Create account to chat</p>
-    <button class="chat-btn">Sign up</button>
-    <button class="view-btn" id="closeModal">Cancel</button>
-  </div>
 </div>
 
 <!-- NAV -->
-<div class="bottom-nav">
-  <div class="nav-item active"><i class="fa-solid fa-house"></i></div>
-  <div class="nav-item"><i class="fa-solid fa-book-open"></i></div>
-  <div class="nav-item"><i class="fa-solid fa-message"></i></div>
-  <div class="nav-item"><i class="fa-solid fa-user"></i></div>
+<div class="nav">
+  <i class="fa-solid fa-house active"></i>
+  <i class="fa-solid fa-book-open"></i>
+  <i class="fa-solid fa-message"></i>
+  <i class="fa-solid fa-user"></i>
 </div>
 
+<!-- JS -->
 <script src="script.js"></script>
 
 </body>
