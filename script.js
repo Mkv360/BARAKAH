@@ -1,306 +1,112 @@
-// ==============================
-// STATE
-// ==============================
-let loggedIn = false;
-let currentFilter = "All";
-let currentLocation = "Bole";
-let showAllPopular = false;
-let currentLang = "en";
-
-
-// ==============================
-// USTAZ DATA
-// ==============================
 const ustazData = [
-  {id:1,name:"Ahmed Ali",gender:"male",subjects:["Tajweed","Hifz"],location:"Bole",distance:1.2,mosque:"Anwar Mosque",rating:4.7,available:true},
-  {id:2,name:"Mohamed Idris",gender:"male",subjects:["Hifz"],location:"Bole",distance:0.9,mosque:"Bilal Mosque",rating:4.8,available:true},
-  {id:3,name:"Abdullah Musa",gender:"male",subjects:["Tajweed"],location:"Yeka",distance:1.5,mosque:"Yeka Mosque",rating:4.6,available:false},
-  {id:4,name:"Yusuf Ahmed",gender:"male",subjects:["Quran Basics"],location:"Kirkos",distance:2.1,mosque:"Kirkos Mosque",rating:4.5,available:true},
-  {id:5,name:"Ibrahim Hassan",gender:"male",subjects:["Hifz"],location:"Kolfe",distance:1.8,mosque:"Kolfe Mosque",rating:4.9,available:true},
-
-  {id:6,name:"Fatima Hassan",gender:"female",subjects:["Quran Basics"],location:"Yeka",distance:2.0,mosque:"Yeka Mosque",rating:4.9,available:true},
-  {id:7,name:"Aisha Ali",gender:"female",subjects:["Tajweed"],location:"Bole",distance:1.3,mosque:"Anwar Mosque",rating:4.8,available:true},
-  {id:8,name:"Khadija Omar",gender:"female",subjects:["Hifz"],location:"Kirkos",distance:2.4,mosque:"Kirkos Mosque",rating:4.7,available:false},
-  {id:9,name:"Maryam Yusuf",gender:"female",subjects:["Quran Basics"],location:"Kolfe",distance:1.7,mosque:"Kolfe Mosque",rating:4.6,available:true},
-  {id:10,name:"Zainab Ahmed",gender:"female",subjects:["Tajweed","Hifz"],location:"Bole",distance:0.7,mosque:"Bilal Mosque",rating:5.0,available:true}
+  {name:"Ahmed Ali", gender:"male", subjects:["Tajweed","Hifz"], rating:4.9},
+  {name:"Fatima Hassan", gender:"female", subjects:["Quran"], rating:4.8},
+  {name:"Musa Ibrahim", gender:"male", subjects:["Tajweed"], rating:4.7},
+  {name:"Aisha Ali", gender:"female", subjects:["Hifz"], rating:4.9}
 ];
 
+let currentFilter = "All";
 
-// ==============================
 // INIT
-// ==============================
 document.addEventListener("DOMContentLoaded", () => {
   renderAll();
-
   initFilters();
-  initLocation();
   initSearch();
-  initTheme();
-  initLanguage();
-  initSeeAll();
-  initModal();
-  initScrollButtons();
-  initFindButton();
 });
 
-
-// ==============================
 // RENDER ALL
-// ==============================
 function renderAll() {
-  applyFilters();
   renderPopular();
+  renderList(ustazData);
 }
 
+// POPULAR
+function renderPopular() {
+  const container = document.getElementById("popularList");
+  container.innerHTML = "";
 
-// ==============================
-// LIST RENDER
-// ==============================
-function renderUstazList(data) {
+  ustazData.forEach(u => {
+    container.innerHTML += `
+      <div class="small-card">
+        <div class="avatar"></div>
+        <div class="small-name">${u.name.split(" ")[0]}</div>
+        <div class="small-rating">⭐ ${u.rating}</div>
+      </div>
+    `;
+  });
+}
+
+// LIST
+function renderList(data) {
   const container = document.getElementById("ustazList");
   container.innerHTML = "";
 
-  if (data.length === 0) {
-    container.innerHTML = `<p style="color:gray;">No ustaz found</p>`;
-    return;
-  }
-
   data.forEach(u => {
     container.innerHTML += `
-      <div class="ustaz-card">
+      <div class="card">
         <div class="avatar"></div>
-
-        <div class="ustaz-info">
-          <div class="top-row">
-            <h4>${u.name}</h4>
-            <span>⭐ ${u.rating}</span>
+        <div class="info">
+          <div class="top">
+            <div class="name">${u.name}</div>
+            <div>⭐ ${u.rating}</div>
           </div>
 
-          <p class="subjects">${u.subjects.join(" • ")}</p>
-          <p class="location-text">📍 ${u.location} (${u.distance} km)</p>
+          <div class="sub">${u.subjects.join(" • ")}</div>
 
           <div class="actions">
-            <button class="chat-btn" data-id="${u.id}">Chat</button>
-            <button class="view-btn">View</button>
+            <button class="btn chat">Chat</button>
+            <button class="btn view">View</button>
           </div>
         </div>
       </div>
     `;
   });
-
-  attachEvents();
 }
 
-
-// ==============================
-// POPULAR
-// ==============================
-function renderPopular() {
-  const container = document.getElementById("popularList");
-
-  let list = [...ustazData].sort((a,b)=>b.rating-a.rating);
-
-  if (!showAllPopular) list = list.slice(0,6);
-
-  container.innerHTML = "";
-
-  list.forEach(u=>{
-    container.innerHTML += `
-      <div class="small-card">
-        <div class="avatar"></div>
-        <p class="small-name">${u.name.split(" ")[0]}</p>
-        <p class="small-rating">⭐ ${u.rating}</p>
-      </div>
-    `;
-  });
-}
-
-
-// ==============================
-// SEE ALL
-// ==============================
-function initSeeAll(){
-  const btn = document.getElementById("seeAllBtn");
-
-  btn.onclick = ()=>{
-    showAllPopular = !showAllPopular;
-    btn.innerText = showAllPopular ? "Show Less" : "See all";
-    renderPopular();
-  };
-}
-
-
-// ==============================
-// LOCATION (FIXED)
-// ==============================
-function initLocation(){
-  const box = document.getElementById("locationBox");
-  const dropdown = document.getElementById("locationDropdown");
-  const text = document.getElementById("selectedLocation");
-
-  box.onclick = (e)=>{
-    e.stopPropagation();
-    dropdown.classList.toggle("active");
-  };
-
-  document.querySelectorAll(".location-item").forEach(item=>{
-    item.onclick = (e)=>{
-      e.stopPropagation();
-
-      currentLocation = item.dataset.value;
-      text.innerText = item.innerText;
-
-      dropdown.classList.remove("active");
-      applyFilters();
-    };
-  });
-
-  document.addEventListener("click", ()=>{
-    dropdown.classList.remove("active");
-  });
-}
-
-
-// ==============================
 // FILTERS
-// ==============================
-function initFilters(){
-  document.querySelectorAll(".filter-btn").forEach(btn=>{
-    btn.onclick = ()=>{
-      document.querySelectorAll(".filter-btn")
-        .forEach(b=>b.classList.remove("active"));
-
+function initFilters() {
+  document.querySelectorAll(".filter").forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
+
       currentFilter = btn.innerText;
-      applyFilters();
+
+      let filtered = ustazData;
+
+      if (currentFilter === "Male") {
+        filtered = ustazData.filter(u => u.gender === "male");
+      }
+
+      if (currentFilter === "Female") {
+        filtered = ustazData.filter(u => u.gender === "female");
+      }
+
+      if (currentFilter === "Hifz") {
+        filtered = ustazData.filter(u => u.subjects.includes("Hifz"));
+      }
+
+      if (currentFilter === "Tajweed") {
+        filtered = ustazData.filter(u => u.subjects.includes("Tajweed"));
+      }
+
+      renderList(filtered);
     };
   });
 }
 
-
-// ==============================
-// APPLY FILTERS (FIXED)
-// ==============================
-function applyFilters(){
-  let data = ustazData.filter(u =>
-    u.location.toLowerCase().includes(currentLocation.toLowerCase())
-  );
-
-  if(currentFilter==="Male") data = data.filter(u=>u.gender==="male");
-  if(currentFilter==="Female") data = data.filter(u=>u.gender==="female");
-  if(currentFilter==="Hifz") data = data.filter(u=>u.subjects.includes("Hifz"));
-  if(currentFilter==="Tajweed") data = data.filter(u=>u.subjects.includes("Tajweed"));
-
-  renderUstazList(data);
-}
-
-
-// ==============================
 // SEARCH
-// ==============================
-function initSearch(){
+function initSearch() {
   const input = document.getElementById("searchInput");
 
-  input.oninput = ()=>{
-    const v = input.value.toLowerCase();
+  input.addEventListener("input", () => {
+    const val = input.value.toLowerCase();
 
     const filtered = ustazData.filter(u =>
-      u.name.toLowerCase().includes(v) ||
-      u.subjects.join(" ").toLowerCase().includes(v)
+      u.name.toLowerCase().includes(val) ||
+      u.subjects.join(" ").toLowerCase().includes(val)
     );
 
-    renderUstazList(filtered);
-  };
-}
-
-
-// ==============================
-// EVENTS
-// ==============================
-function attachEvents(){
-  document.querySelectorAll(".chat-btn").forEach(btn=>{
-    btn.onclick = ()=>{
-      if(!loggedIn) openModal();
-    };
+    renderList(filtered);
   });
-}
-
-
-// ==============================
-// MODAL
-// ==============================
-function initModal(){
-  const modal = document.getElementById("authModal");
-  const close = document.getElementById("closeModal");
-
-  window.openModal = ()=> modal.style.display="flex";
-  window.closeModal = ()=> modal.style.display="none";
-
-  close.onclick = closeModal;
-
-  window.onclick = (e)=>{
-    if(e.target===modal) closeModal();
-  };
-}
-
-
-// ==============================
-// THEME
-// ==============================
-function initTheme(){
-  document.querySelector(".theme-toggle").onclick = ()=>{
-    document.body.classList.toggle("light-mode");
-  };
-}
-
-
-// ==============================
-// LANGUAGE (IMPROVED)
-// ==============================
-function initLanguage(){
-  const btn = document.querySelector(".lang-toggle");
-
-  if(!btn) return;
-
-  btn.onclick = ()=>{
-    currentLang = currentLang==="en" ? "am" : "en";
-
-    btn.innerText = currentLang==="en" ? "EN" : "አማ";
-
-    document.querySelector(".hero-title").innerText =
-      currentLang==="en"
-      ? "Connecting You with Qualified Quran Ustaz Easily."
-      : "ተመራጭ የቁርአን አስተማሪዎችን በቀላሉ ያግኙ";
-  };
-}
-
-
-// ==============================
-// SCROLL BUTTONS
-// ==============================
-function initScrollButtons(){
-  document.getElementById("scrollLeft").onclick = ()=>{
-    document.getElementById("popularList")
-      .scrollBy({left:-200,behavior:"smooth"});
-  };
-
-  document.getElementById("scrollRight").onclick = ()=>{
-    document.getElementById("popularList")
-      .scrollBy({left:200,behavior:"smooth"});
-  };
-}
-
-
-// ==============================
-// FIND BUTTON
-// ==============================
-function initFindButton(){
-  const btn = document.getElementById("findBtn");
-
-  if(!btn) return;
-
-  btn.onclick = ()=>{
-    document.getElementById("ustazList")
-      .scrollIntoView({behavior:"smooth"});
-  };
 }
