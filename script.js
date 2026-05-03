@@ -5,46 +5,24 @@ let loggedIn = false;
 let currentFilter = "All";
 let currentLocation = "Bole";
 let showAllPopular = false;
-let currentLang = "en"; // NEW
+let currentLang = "en";
 
 
 // ==============================
-// USTAZ DATA
+// USTAZ DATA (10 USERS)
 // ==============================
 const ustazData = [
-  {
-    id: 1,
-    name: "Ahmed Ali",
-    gender: "male",
-    subjects: ["Tajweed", "Hifz"],
-    location: "Bole",
-    distance: 1.2,
-    mosque: "Anwar Mosque",
-    rating: 4.7,
-    available: true
-  },
-  {
-    id: 2,
-    name: "Fatima Hassan",
-    gender: "female",
-    subjects: ["Quran Basics"],
-    location: "Yeka",
-    distance: 2.0,
-    mosque: "Yeka Mosque",
-    rating: 4.9,
-    available: true
-  },
-  {
-    id: 3,
-    name: "Abdullah Musa",
-    gender: "male",
-    subjects: ["Hifz"],
-    location: "Bole",
-    distance: 0.8,
-    mosque: "Bilal Mosque",
-    rating: 4.6,
-    available: false
-  }
+  {id:1,name:"Ahmed Ali",gender:"male",subjects:["Tajweed","Hifz"],location:"Bole",distance:1.2,mosque:"Anwar Mosque",rating:4.7,available:true},
+  {id:2,name:"Mohamed Idris",gender:"male",subjects:["Hifz"],location:"Bole",distance:0.9,mosque:"Bilal Mosque",rating:4.8,available:true},
+  {id:3,name:"Abdullah Musa",gender:"male",subjects:["Tajweed"],location:"Yeka",distance:1.5,mosque:"Yeka Mosque",rating:4.6,available:false},
+  {id:4,name:"Yusuf Ahmed",gender:"male",subjects:["Quran Basics"],location:"Kirkos",distance:2.1,mosque:"Kirkos Mosque",rating:4.5,available:true},
+  {id:5,name:"Ibrahim Hassan",gender:"male",subjects:["Hifz"],location:"Kolfe",distance:1.8,mosque:"Kolfe Mosque",rating:4.9,available:true},
+
+  {id:6,name:"Fatima Hassan",gender:"female",subjects:["Quran Basics"],location:"Yeka",distance:2.0,mosque:"Yeka Mosque",rating:4.9,available:true},
+  {id:7,name:"Aisha Ali",gender:"female",subjects:["Tajweed"],location:"Bole",distance:1.3,mosque:"Anwar Mosque",rating:4.8,available:true},
+  {id:8,name:"Khadija Omar",gender:"female",subjects:["Hifz"],location:"Kirkos",distance:2.4,mosque:"Kirkos Mosque",rating:4.7,available:false},
+  {id:9,name:"Maryam Yusuf",gender:"female",subjects:["Quran Basics"],location:"Kolfe",distance:1.7,mosque:"Kolfe Mosque",rating:4.6,available:true},
+  {id:10,name:"Zainab Ahmed",gender:"female",subjects:["Tajweed","Hifz"],location:"Bole",distance:0.7,mosque:"Bilal Mosque",rating:5.0,available:true}
 ];
 
 
@@ -53,15 +31,13 @@ const ustazData = [
 // ==============================
 document.addEventListener("DOMContentLoaded", () => {
   renderAll();
-
   initFilters();
-  initNav();
-  initModal();
+  initLocation();
   initSearch();
   initTheme();
-  initLocation();
+  initLanguage();
   initSeeAll();
-  initLanguage(); // NEW
+  initModal();
 });
 
 
@@ -75,55 +51,33 @@ function renderAll() {
 
 
 // ==============================
-// HERO SCROLL
-// ==============================
-function scrollToList() {
-  document.getElementById("ustazList")
-    .scrollIntoView({ behavior: "smooth" });
-}
-
-
-// ==============================
-// RENDER USTAZ LIST
+// LIST RENDER
 // ==============================
 function renderUstazList(data) {
   const container = document.getElementById("ustazList");
   container.innerHTML = "";
 
-  if (data.length === 0) {
-    container.innerHTML = `<p style="text-align:center;color:gray;">No Ustaz found</p>`;
-    return;
-  }
-
   data.forEach(u => {
-    const card = document.createElement("div");
-    card.className = "ustaz-card";
+    container.innerHTML += `
+      <div class="ustaz-card">
+        <div class="avatar"></div>
 
-    card.innerHTML = `
-      <div class="avatar"></div>
+        <div class="ustaz-info">
+          <div class="top-row">
+            <h4 class="name">${u.name}</h4>
+            <span class="rating">⭐ ${u.rating}</span>
+          </div>
 
-      <div class="ustaz-info">
-        <div class="top-row">
-          <h4 class="name">${u.name} ✔️</h4>
-          <span class="rating">⭐ ${u.rating}</span>
-        </div>
+          <p class="subjects">${u.subjects.join(" • ")}</p>
+          <p class="location-text">📍 ${u.location} (${u.distance} km)</p>
 
-        <p class="subjects">${u.subjects.join(" • ")}</p>
-        <p class="location-text">📍 ${u.location} (${u.distance} km)</p>
-        <p class="mosque">🕌 ${u.mosque}</p>
-
-        <p class="status ${u.available ? "available" : ""}">
-          ${u.available ? "🟢 Available" : "🔴 Not Available"}
-        </p>
-
-        <div class="actions">
-          <button class="chat-btn" data-id="${u.id}">Chat</button>
-          <button class="view-btn" data-id="${u.id}">View</button>
+          <div class="actions">
+            <button class="chat-btn" data-id="${u.id}">Chat</button>
+            <button class="view-btn">View</button>
+          </div>
         </div>
       </div>
     `;
-
-    container.appendChild(card);
   });
 
   attachEvents();
@@ -131,41 +85,45 @@ function renderUstazList(data) {
 
 
 // ==============================
-// POPULAR SECTION
+// POPULAR (SCROLLABLE)
 // ==============================
 function renderPopular() {
   const container = document.getElementById("popularList");
 
-  let sorted = [...ustazData]
-    .sort((a, b) => b.rating - a.rating);
+  let list = [...ustazData].sort((a,b)=>b.rating-a.rating);
 
-  if (!showAllPopular) {
-    sorted = sorted.slice(0, 5);
+  if(!showAllPopular){
+    list = list.slice(0,6);
   }
 
   container.innerHTML = "";
 
-  sorted.forEach(u => {
+  list.forEach(u=>{
     container.innerHTML += `
-      <div class="small-card">
+      <div class="small-card" data-id="${u.id}">
         <div class="avatar"></div>
         <p class="small-name">${u.name.split(" ")[0]}</p>
         <p class="small-rating">⭐ ${u.rating}</p>
       </div>
     `;
   });
+
+  // clickable
+  document.querySelectorAll(".small-card").forEach(card=>{
+    card.onclick = ()=>{
+      openModal();
+    };
+  });
 }
 
 
 // ==============================
-// SEE ALL BUTTON
+// SEE ALL
 // ==============================
-function initSeeAll() {
+function initSeeAll(){
   const btn = document.querySelector(".see-all");
 
-  if (!btn) return;
-
-  btn.onclick = () => {
+  btn.onclick = ()=>{
     showAllPopular = !showAllPopular;
     btn.innerText = showAllPopular ? "Show Less" : "See all";
     renderPopular();
@@ -174,129 +132,92 @@ function initSeeAll() {
 
 
 // ==============================
-// ✅ FIXED LOCATION DROPDOWN
+// LOCATION (FIXED)
 // ==============================
-function initLocation() {
+function initLocation(){
   const box = document.getElementById("locationBox");
   const dropdown = document.getElementById("locationDropdown");
   const text = document.getElementById("selectedLocation");
 
-  if (!box || !dropdown) return;
-
-  // Toggle dropdown
-  box.addEventListener("click", (e) => {
+  box.onclick = (e)=>{
     e.stopPropagation();
     dropdown.style.display =
-      dropdown.style.display === "flex" ? "none" : "flex";
-  });
+      dropdown.style.display === "block" ? "none" : "block";
+  };
 
-  // Select location
-  dropdown.querySelectorAll("p").forEach(item => {
-    item.addEventListener("click", () => {
-      const full = item.innerText + ", Addis Ababa";
+  document.querySelectorAll("#locationDropdown p").forEach(item=>{
+    item.onclick = ()=>{
       currentLocation = item.innerText;
-
-      text.innerText = full;
+      text.innerText = item.innerText + ", Addis Ababa";
       dropdown.style.display = "none";
-
       applyFilters();
-    });
+    };
   });
 
-  // Click outside closes
-  document.addEventListener("click", () => {
+  document.addEventListener("click", ()=>{
     dropdown.style.display = "none";
   });
 }
 
 
 // ==============================
-// FILTER SYSTEM
+// FILTERS
 // ==============================
-function initFilters() {
-  const buttons = document.querySelectorAll(".filter-btn");
+function initFilters(){
+  document.querySelectorAll(".filter-btn").forEach(btn=>{
+    btn.onclick = ()=>{
+      document.querySelectorAll(".filter-btn")
+        .forEach(b=>b.classList.remove("active"));
 
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      buttons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-
       currentFilter = btn.innerText;
       applyFilters();
-    });
+    };
   });
 }
 
 
 // ==============================
-// APPLY FILTERS + LOCATION
+// APPLY FILTERS
 // ==============================
-function applyFilters() {
-  let filtered = ustazData.filter(u =>
-    u.location === currentLocation
-  );
+function applyFilters(){
+  let data = ustazData.filter(u=>u.location===currentLocation);
 
-  if (currentFilter === "Female") {
-    filtered = filtered.filter(u => u.gender === "female");
-  }
+  if(currentFilter==="Male") data = data.filter(u=>u.gender==="male");
+  if(currentFilter==="Female") data = data.filter(u=>u.gender==="female");
+  if(currentFilter==="Hifz") data = data.filter(u=>u.subjects.includes("Hifz"));
+  if(currentFilter==="Tajweed") data = data.filter(u=>u.subjects.includes("Tajweed"));
 
-  if (currentFilter === "Male") {
-    filtered = filtered.filter(u => u.gender === "male");
-  }
-
-  if (currentFilter === "Hifz") {
-    filtered = filtered.filter(u => u.subjects.includes("Hifz"));
-  }
-
-  if (currentFilter === "Tajweed") {
-    filtered = filtered.filter(u => u.subjects.includes("Tajweed"));
-  }
-
-  renderUstazList(filtered);
+  renderUstazList(data);
 }
 
 
 // ==============================
 // SEARCH
 // ==============================
-function initSearch() {
+function initSearch(){
   const input = document.getElementById("searchInput");
 
-  if (!input) return;
-
-  input.addEventListener("input", () => {
-    const value = input.value.toLowerCase();
+  input.oninput = ()=>{
+    const v = input.value.toLowerCase();
 
     const filtered = ustazData.filter(u =>
-      u.name.toLowerCase().includes(value) ||
-      u.subjects.join(" ").toLowerCase().includes(value) ||
-      u.location.toLowerCase().includes(value)
+      u.name.toLowerCase().includes(v) ||
+      u.subjects.join(" ").toLowerCase().includes(v)
     );
 
     renderUstazList(filtered);
-  });
+  };
 }
 
 
 // ==============================
 // EVENTS
 // ==============================
-function attachEvents() {
-  document.querySelectorAll(".chat-btn").forEach(btn => {
-    btn.onclick = (e) => {
-      e.stopPropagation();
-
-      if (!loggedIn) {
-        openModal();
-      } else {
-        openTelegramChat(btn.dataset.id);
-      }
-    };
-  });
-
-  document.querySelectorAll(".view-btn").forEach(btn => {
-    btn.onclick = () => {
-      console.log("Open profile:", btn.dataset.id);
+function attachEvents(){
+  document.querySelectorAll(".chat-btn").forEach(btn=>{
+    btn.onclick = ()=>{
+      if(!loggedIn) openModal();
     };
   });
 }
@@ -305,87 +226,47 @@ function attachEvents() {
 // ==============================
 // MODAL
 // ==============================
-function initModal() {
+function initModal(){
   const modal = document.getElementById("authModal");
-  const closeBtn = document.getElementById("closeModal");
+  const close = document.getElementById("closeModal");
 
-  window.openModal = () => modal.style.display = "flex";
-  window.closeModal = () => modal.style.display = "none";
+  window.openModal = ()=> modal.style.display="flex";
+  window.closeModal = ()=> modal.style.display="none";
 
-  closeBtn.onclick = closeModal;
+  close.onclick = closeModal;
 
-  window.onclick = (e) => {
-    if (e.target === modal) closeModal();
+  window.onclick = (e)=>{
+    if(e.target===modal) closeModal();
   };
-}
-
-
-// ==============================
-// NAV
-// ==============================
-function initNav() {
-  document.querySelectorAll(".nav-item").forEach(item => {
-    item.onclick = () => {
-      document.querySelectorAll(".nav-item")
-        .forEach(i => i.classList.remove("active"));
-
-      item.classList.add("active");
-    };
-  });
 }
 
 
 // ==============================
 // THEME
 // ==============================
-function initTheme() {
-  const toggle = document.querySelector(".theme-toggle");
-
-  if (!toggle) return;
-
-  toggle.onclick = () => {
+function initTheme(){
+  document.querySelector(".theme-toggle").onclick = ()=>{
     document.body.classList.toggle("light-mode");
   };
 }
 
 
 // ==============================
-// 🌍 LANGUAGE SWITCH (NEW)
+// 🌍 LANGUAGE (FIXED)
 // ==============================
-function initLanguage() {
-  const langBtn = document.querySelector(".lang-toggle");
+function initLanguage(){
+  const btn = document.querySelector(".lang-toggle");
 
-  if (!langBtn) return;
+  if(!btn) return;
 
-  langBtn.onclick = () => {
-    currentLang = currentLang === "en" ? "am" : "en";
+  btn.onclick = ()=>{
+    currentLang = currentLang==="en" ? "am" : "en";
 
-    langBtn.innerText = currentLang === "en" ? "EN" : "አማ";
+    btn.innerText = currentLang==="en" ? "EN" : "አማ";
 
-    applyLanguage();
+    document.querySelector(".hero-title").innerText =
+      currentLang==="en"
+      ? "Connecting You with Qualified Quran Ustaz Easily."
+      : "ተመራጭ የቁርአን አስተማሪዎችን በቀላሉ ያግኙ";
   };
-}
-
-function applyLanguage() {
-  if (currentLang === "am") {
-    document.querySelector(".hero-title").innerText =
-      "ተመራጭ የቁርአን አስተማሪዎችን በቀላሉ ያግኙ";
-
-    document.querySelector(".hero-subtitle").innerText =
-      "ተመካከር የሚችሉ አስተማሪዎችን በፍጥነት ያግኙ";
-  } else {
-    document.querySelector(".hero-title").innerText =
-      "Connecting You with Qualified Quran Ustaz Easily.";
-
-    document.querySelector(".hero-subtitle").innerText =
-      "Find trusted, nearby Quran teachers quickly and safely.";
-  }
-}
-
-
-// ==============================
-// TELEGRAM
-// ==============================
-function openTelegramChat(id) {
-  alert("Opening chat with Ustaz ID: " + id);
 }
