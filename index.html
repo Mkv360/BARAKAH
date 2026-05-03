@@ -96,24 +96,32 @@
     <button class="filter-btn">Tajweed</button>
   </div>
 
-  <!-- 🔥 POPULAR -->
+ <!-- 🔥 POPULAR -->
 <div class="section">
 
+  <!-- HEADER -->
   <div class="section-header">
-    <h3>🔥 Popular Near You</h3>
+    <h3 class="section-title">🔥 Popular Near You</h3>
     <span class="see-all" id="seeAllBtn">See all</span>
   </div>
 
+  <!-- WRAPPER -->
   <div class="popular-wrapper">
 
     <!-- LEFT ARROW -->
-    <div class="scroll-btn left" id="scrollLeft">‹</div>
+    <button class="scroll-btn left" id="scrollLeft" aria-label="Scroll left">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
 
     <!-- SCROLL AREA -->
-    <div class="horizontal-scroll" id="popularList"></div>
+    <div class="horizontal-scroll" id="popularList">
+      <!-- JS inserts cards -->
+    </div>
 
     <!-- RIGHT ARROW -->
-    <div class="scroll-btn right" id="scrollRight">›</div>
+    <button class="scroll-btn right" id="scrollRight" aria-label="Scroll right">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
 
   </div>
 
