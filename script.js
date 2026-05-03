@@ -5,6 +5,7 @@ let loggedIn = false;
 let currentFilter = "All";
 let currentLocation = "Bole";
 let showAllPopular = false;
+let currentLang = "en"; // NEW
 
 
 // ==============================
@@ -60,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initLocation();
   initSeeAll();
+  initLanguage(); // NEW
 });
 
 
@@ -87,6 +89,11 @@ function scrollToList() {
 function renderUstazList(data) {
   const container = document.getElementById("ustazList");
   container.innerHTML = "";
+
+  if (data.length === 0) {
+    container.innerHTML = `<p style="text-align:center;color:gray;">No Ustaz found</p>`;
+    return;
+  }
 
   data.forEach(u => {
     const card = document.createElement("div");
@@ -154,46 +161,57 @@ function renderPopular() {
 // SEE ALL BUTTON
 // ==============================
 function initSeeAll() {
-  const seeAllBtn = document.getElementById("seeAllBtn");
+  const btn = document.querySelector(".see-all");
 
-  if (!seeAllBtn) return;
+  if (!btn) return;
 
-  seeAllBtn.onclick = () => {
+  btn.onclick = () => {
     showAllPopular = !showAllPopular;
-    seeAllBtn.innerText = showAllPopular ? "Show Less" : "See All";
+    btn.innerText = showAllPopular ? "Show Less" : "See all";
     renderPopular();
   };
 }
 
 
 // ==============================
-// LOCATION DROPDOWN
+// ✅ FIXED LOCATION DROPDOWN
 // ==============================
 function initLocation() {
-  const locationText = document.querySelector(".location");
+  const box = document.getElementById("locationBox");
   const dropdown = document.getElementById("locationDropdown");
+  const text = document.getElementById("selectedLocation");
 
-  if (!locationText || !dropdown) return;
+  if (!box || !dropdown) return;
 
-  locationText.onclick = () => {
+  // Toggle dropdown
+  box.addEventListener("click", (e) => {
+    e.stopPropagation();
     dropdown.style.display =
       dropdown.style.display === "flex" ? "none" : "flex";
-  };
+  });
 
-  dropdown.querySelectorAll("div").forEach(item => {
-    item.onclick = () => {
+  // Select location
+  dropdown.querySelectorAll("p").forEach(item => {
+    item.addEventListener("click", () => {
+      const full = item.innerText + ", Addis Ababa";
       currentLocation = item.innerText;
-      locationText.innerText = `📍 ${currentLocation} ▼`;
+
+      text.innerText = full;
       dropdown.style.display = "none";
 
       applyFilters();
-    };
+    });
+  });
+
+  // Click outside closes
+  document.addEventListener("click", () => {
+    dropdown.style.display = "none";
   });
 }
 
 
 // ==============================
-// FILTER SYSTEM (COMBINED)
+// FILTER SYSTEM
 // ==============================
 function initFilters() {
   const buttons = document.querySelectorAll(".filter-btn");
@@ -204,7 +222,6 @@ function initFilters() {
       btn.classList.add("active");
 
       currentFilter = btn.innerText;
-
       applyFilters();
     });
   });
@@ -262,7 +279,7 @@ function initSearch() {
 
 
 // ==============================
-// EVENTS (CHAT / VIEW)
+// EVENTS
 // ==============================
 function attachEvents() {
   document.querySelectorAll(".chat-btn").forEach(btn => {
@@ -304,7 +321,7 @@ function initModal() {
 
 
 // ==============================
-// NAVIGATION
+// NAV
 // ==============================
 function initNav() {
   document.querySelectorAll(".nav-item").forEach(item => {
@@ -319,7 +336,7 @@ function initNav() {
 
 
 // ==============================
-// THEME TOGGLE
+// THEME
 // ==============================
 function initTheme() {
   const toggle = document.querySelector(".theme-toggle");
@@ -333,11 +350,42 @@ function initTheme() {
 
 
 // ==============================
-// TELEGRAM CHAT
+// 🌍 LANGUAGE SWITCH (NEW)
+// ==============================
+function initLanguage() {
+  const langBtn = document.querySelector(".lang-toggle");
+
+  if (!langBtn) return;
+
+  langBtn.onclick = () => {
+    currentLang = currentLang === "en" ? "am" : "en";
+
+    langBtn.innerText = currentLang === "en" ? "EN" : "አማ";
+
+    applyLanguage();
+  };
+}
+
+function applyLanguage() {
+  if (currentLang === "am") {
+    document.querySelector(".hero-title").innerText =
+      "ተመራጭ የቁርአን አስተማሪዎችን በቀላሉ ያግኙ";
+
+    document.querySelector(".hero-subtitle").innerText =
+      "ተመካከር የሚችሉ አስተማሪዎችን በፍጥነት ያግኙ";
+  } else {
+    document.querySelector(".hero-title").innerText =
+      "Connecting You with Qualified Quran Ustaz Easily.";
+
+    document.querySelector(".hero-subtitle").innerText =
+      "Find trusted, nearby Quran teachers quickly and safely.";
+  }
+}
+
+
+// ==============================
+// TELEGRAM
 // ==============================
 function openTelegramChat(id) {
   alert("Opening chat with Ustaz ID: " + id);
-
-  // future:
-  // window.open(`https://t.me/username`);
 }
