@@ -52,6 +52,7 @@ body {
 
 .app-name {
   margin: 0;
+  font-weight: 700;
 }
 
 .green {
@@ -60,21 +61,21 @@ body {
 
 /* 📍 LOCATION */
 .location-box {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
   cursor: pointer;
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 20px;
   background: var(--card);
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 /* DROPDOWN */
 .location-dropdown {
   position: absolute;
-  top: 80px;
+  top: 85px;
   left: 16px;
   right: 16px;
   background: var(--card-strong);
@@ -144,20 +145,27 @@ body {
 
 /* 🌟 HERO */
 .hero {
-  margin: 24px 0;
+  margin: 28px 0;
 }
 
 .hero-badge {
-  display: inline-block;
-  background: var(--card);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  background: rgba(46, 204, 113, 0.15);
+  color: var(--primary);
+
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;
-  margin-bottom: 10px;
+
+  margin-bottom: 12px;
 }
 
 .hero-title {
-  font-size: 24px;
+  font-size: 28px;
+  font-weight: 700;
   line-height: 1.4;
   margin: 10px 0;
 }
@@ -169,24 +177,26 @@ body {
 
 .hero-btn {
   width: 100%;
-  padding: 14px;
+  padding: 15px;
   border-radius: 30px;
   border: none;
   background: var(--primary);
   color: black;
   font-weight: 600;
-  margin-top: 14px;
+  margin-top: 16px;
+  cursor: pointer;
 }
 
 /* 🔍 SEARCH */
 .search-bar input {
   width: 100%;
-  padding: 14px;
+  padding: 14px 18px;
   border-radius: 30px;
   border: none;
-  margin: 15px 0;
-  background: var(--card);
+  margin: 18px 0;
+  background: rgba(255,255,255,0.06);
   color: var(--text);
+  font-size: 14px;
 }
 
 /* ⚡ FILTERS */
@@ -202,16 +212,18 @@ body {
 }
 
 .filter-btn {
-  padding: 8px 16px;
+  padding: 10px 16px;
   border-radius: 20px;
-  background: var(--card);
+  background: rgba(255,255,255,0.06);
   border: none;
   color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
 }
 
 .filter-btn.active {
   background: var(--primary);
-  color: black;
+  color: #000;
 }
 
 /* 📦 SECTION */
@@ -224,16 +236,18 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 18px;
   margin-bottom: 10px;
 }
 
 .section-header h3 {
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .see-all {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--primary);
   cursor: pointer;
 }
@@ -247,7 +261,7 @@ body {
   display: flex;
   gap: 14px;
   overflow-x: auto;
-  padding: 10px 35px; /* space for arrows */
+  padding: 10px 40px;
   scroll-behavior: smooth;
 }
 
@@ -260,10 +274,11 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -276,25 +291,44 @@ body {
 .scroll-btn.left { left: 0; }
 .scroll-btn.right { right: 0; }
 
-/* CARDS */
-.small-card {
-  min-width: 110px;
-  background: var(--card);
-  padding: 14px;
-  border-radius: 18px;
-  text-align: center;
+.scroll-btn:hover {
+  background: var(--primary);
+  color: black;
 }
 
-.small-name { font-size: 13px; }
-.small-rating { font-size: 12px; color: var(--muted); }
+/* SMALL CARDS */
+.small-card {
+  min-width: 120px;
+  background: rgba(255,255,255,0.05);
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.small-card:hover {
+  transform: translateY(-6px);
+}
+
+.small-name {
+  font-size: 13px;
+}
+
+.small-rating {
+  font-size: 12px;
+  color: var(--muted);
+}
 
 /* AVATAR */
 .avatar {
-  width: 54px;
-  height: 54px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: #ccc;
+  background: #bbb;
   margin: auto;
+  margin-bottom: 10px;
 }
 
 /* LIST */
@@ -311,6 +345,12 @@ body {
   padding: 14px;
   border-radius: 20px;
   background: var(--card);
+  border: 1px solid var(--border);
+  transition: 0.25s;
+}
+
+.ustaz-card:hover {
+  transform: translateY(-3px);
 }
 
 /* INFO */
@@ -341,6 +381,7 @@ body {
   border-radius: 14px;
   border: none;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .chat-btn {
@@ -374,16 +415,19 @@ body {
 /* NAV */
 .bottom-nav {
   position: fixed;
-  bottom: 12px;
+  bottom: 14px;
   left: 50%;
   transform: translateX(-50%);
   width: 92%;
   max-width: 420px;
+
   display: flex;
   justify-content: space-around;
-  padding: 14px;
+  padding: 16px;
+
   border-radius: 30px;
-  background: var(--card);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
 }
 
 .nav-item {
