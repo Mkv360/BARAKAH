@@ -33,10 +33,9 @@ body {
   background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
   color: var(--text);
   transition: 0.3s;
-  min-height: 100vh;
 }
 
-/* MAIN */
+/* MAIN CONTAINER */
 #mainView {
   padding: 16px;
   max-width: 420px;
@@ -61,7 +60,6 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  opacity: 0.9;
   cursor: pointer;
   padding: 6px 10px;
   border-radius: 20px;
@@ -69,27 +67,28 @@ body {
   margin-top: 4px;
 }
 
-/* 📍 DROPDOWN */
+/* 📍 DROPDOWN FIXED */
 .location-dropdown {
   position: absolute;
-  top: 70px;
+  top: 75px;
   left: 16px;
   right: 16px;
+
   background: var(--card-strong);
   backdrop-filter: blur(15px);
   border-radius: 14px;
   padding: 10px;
+
   display: flex;
   flex-direction: column;
   gap: 6px;
 
-  /* HIDDEN STATE */
   opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
 
-  transition: 0.25s;
-  z-index: 100;
+  transition: all 0.25s ease;
+  z-index: 999;
 }
 
 .location-dropdown.active {
@@ -120,7 +119,6 @@ body {
 .icon {
   font-size: 18px;
   cursor: pointer;
-  opacity: 0.8;
 }
 
 /* 🌍 LANGUAGE SWITCH */
@@ -135,7 +133,7 @@ body {
 .lang {
   padding: 6px 10px;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .lang.active {
@@ -150,26 +148,14 @@ body {
   margin: 24px 0;
 }
 
-.hero-badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  background: rgba(46,204,113,0.15);
-  color: var(--primary);
-  font-size: 12px;
-  margin-bottom: 10px;
-}
-
 .hero-title {
   font-size: 24px;
-  margin: 10px 0;
   line-height: 1.4;
 }
 
 .hero-subtitle {
   font-size: 14px;
   color: var(--muted);
-  margin-bottom: 16px;
 }
 
 .hero-btn {
@@ -180,7 +166,7 @@ body {
   background: var(--primary);
   color: black;
   font-weight: 600;
-  cursor: pointer;
+  margin-top: 10px;
 }
 
 /* 🔍 SEARCH */
@@ -192,7 +178,6 @@ body {
   margin: 15px 0;
   background: var(--card);
   color: var(--text);
-  outline: none;
 }
 
 /* ⚡ FILTERS */
@@ -210,10 +195,10 @@ body {
 .filter-btn {
   padding: 8px 16px;
   border-radius: 20px;
-  border: none;
   background: var(--card);
+  border: none;
   color: var(--text);
-  cursor: pointer;
+  white-space: nowrap;
 }
 
 .filter-btn.active {
@@ -221,11 +206,17 @@ body {
   color: black;
 }
 
-/* 🔥 SECTION */
+/* 🔥 SECTION HEADER FIX */
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 8px;
+}
+
+.section-header h3 {
+  font-size: 15px;
+  margin: 0;
 }
 
 .see-all {
@@ -234,11 +225,13 @@ body {
   cursor: pointer;
 }
 
-/* HORIZONTAL */
+/* 🔥 HORIZONTAL SCROLL FIX */
 .horizontal-scroll {
   display: flex;
   gap: 12px;
   overflow-x: auto;
+  padding-bottom: 5px;
+  scroll-snap-type: x mandatory;
 }
 
 .horizontal-scroll::-webkit-scrollbar {
@@ -247,12 +240,23 @@ body {
 
 /* SMALL CARDS */
 .small-card {
-  min-width: 95px;
+  min-width: 100px;
+  flex-shrink: 0;
+
   text-align: center;
   background: var(--card);
   padding: 12px;
   border-radius: 16px;
   border: 1px solid var(--border);
+
+  cursor: pointer;
+  transition: 0.2s;
+
+  scroll-snap-align: start;
+}
+
+.small-card:hover {
+  transform: translateY(-3px);
 }
 
 .small-name {
@@ -268,8 +272,8 @@ body {
 .avatar {
   width: 54px;
   height: 54px;
-  background: #ccc;
   border-radius: 50%;
+  background: #ccc;
   margin: auto;
 }
 
@@ -319,6 +323,13 @@ body {
   margin-top: 8px;
 }
 
+button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+}
+
 .chat-btn {
   background: var(--primary);
   color: black;
@@ -355,9 +366,11 @@ body {
   transform: translateX(-50%);
   width: 92%;
   max-width: 420px;
+
   display: flex;
   justify-content: space-around;
   padding: 14px;
+
   border-radius: 30px;
   background: var(--card);
 }
