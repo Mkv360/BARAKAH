@@ -8,7 +8,7 @@
   <!-- Telegram -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Icons (for better UI like your reference) -->
+  <!-- Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <!-- CSS -->
@@ -23,9 +23,11 @@
   <div class="top-bar">
 
     <div class="top-left">
-      <h2 class="app-name">Baraka<span style="color:#2ecc71;">Link</span></h2>
+      <h2 class="app-name">
+        Baraka<span class="green">Link</span>
+      </h2>
 
-      <!-- 📍 LOCATION -->
+      <!-- 📍 LOCATION SELECT -->
       <div class="location-box" id="locationBox">
         <i class="fa-solid fa-location-dot"></i>
         <span id="selectedLocation">Bole, Addis Ababa</span>
@@ -33,24 +35,38 @@
       </div>
     </div>
 
+    <!-- RIGHT SIDE -->
     <div class="top-icons">
-      <span class="icon theme-toggle"><i class="fa-solid fa-moon"></i></span>
-      <span class="icon"><i class="fa-regular fa-bell"></i></span>
+
+      <!-- 🌙 THEME -->
+      <span class="icon theme-toggle">
+        <i class="fa-solid fa-moon"></i>
+      </span>
+
+      <!-- 🌍 LANGUAGE SWITCH -->
+      <div class="lang-switch" id="langSwitch">
+        <span class="lang active">EN</span>
+        <span class="lang">አማ</span>
+      </div>
+
     </div>
 
   </div>
 
   <!-- 📍 LOCATION DROPDOWN -->
   <div class="location-dropdown" id="locationDropdown">
-    <p onclick="selectLocation('Bole, Addis Ababa')">Bole</p>
-    <p onclick="selectLocation('Yeka, Addis Ababa')">Yeka</p>
-    <p onclick="selectLocation('Kirkos, Addis Ababa')">Kirkos</p>
-    <p onclick="selectLocation('Kolfe, Addis Ababa')">Kolfe</p>
+    <div class="location-item">Bole, Addis Ababa</div>
+    <div class="location-item">Yeka, Addis Ababa</div>
+    <div class="location-item">Kirkos, Addis Ababa</div>
+    <div class="location-item">Kolfe, Addis Ababa</div>
   </div>
 
   <!-- 🌟 HERO -->
   <div class="hero">
-    <div class="hero-badge">🕌 Find Trusted Quran Teachers Near You</div>
+
+    <div class="hero-badge">
+      🕌 Find Trusted Quran Teachers Near You
+    </div>
 
     <h1 class="hero-title">
       Connecting You with Qualified Quran Ustaz Easily.
@@ -63,6 +79,7 @@
     <button class="hero-btn" onclick="scrollToList()">
       Find Ustaz ↓
     </button>
+
   </div>
 
   <!-- 🔍 SEARCH -->
@@ -84,18 +101,18 @@
 
     <div class="section-header">
       <h3>🔥 Popular Near You</h3>
-      <span class="see-all" onclick="togglePopular()">See all</span>
+      <span class="see-all" id="seeAllBtn">See all</span>
     </div>
 
     <div class="horizontal-scroll" id="popularList">
-      <!-- JS will insert data -->
+      <!-- JS inserts -->
     </div>
 
   </div>
 
   <!-- 🧑‍🏫 USTAZ LIST -->
   <div class="ustaz-list" id="ustazList">
-    <!-- JS renders here -->
+    <!-- JS renders -->
   </div>
 
 </div>
