@@ -8,6 +8,9 @@
   <!-- Telegram -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+  <!-- Icons (for better UI like your reference) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -18,15 +21,31 @@
 
   <!-- 🔝 TOP BAR -->
   <div class="top-bar">
+
     <div class="top-left">
-      <h2 class="app-name">BarakaLink</h2>
-      <p class="location">📍 Bole ▼</p>
+      <h2 class="app-name">Baraka<span style="color:#2ecc71;">Link</span></h2>
+
+      <!-- 📍 LOCATION -->
+      <div class="location-box" id="locationBox">
+        <i class="fa-solid fa-location-dot"></i>
+        <span id="selectedLocation">Bole, Addis Ababa</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
     </div>
 
     <div class="top-icons">
-      <span class="icon theme-toggle">🌙</span>
-      <span class="icon">👤</span>
+      <span class="icon theme-toggle"><i class="fa-solid fa-moon"></i></span>
+      <span class="icon"><i class="fa-regular fa-bell"></i></span>
     </div>
+
+  </div>
+
+  <!-- 📍 LOCATION DROPDOWN -->
+  <div class="location-dropdown" id="locationDropdown">
+    <p onclick="selectLocation('Bole, Addis Ababa')">Bole</p>
+    <p onclick="selectLocation('Yeka, Addis Ababa')">Yeka</p>
+    <p onclick="selectLocation('Kirkos, Addis Ababa')">Kirkos</p>
+    <p onclick="selectLocation('Kolfe, Addis Ababa')">Kolfe</p>
   </div>
 
   <!-- 🌟 HERO -->
@@ -48,26 +67,36 @@
 
   <!-- 🔍 SEARCH -->
   <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search Tajweed, Hifz, Female ustaz...">
+    <input type="text" id="searchInput" placeholder="Search ustaz or subject...">
   </div>
 
   <!-- ⚡ FILTERS -->
   <div class="filters">
     <button class="filter-btn active">All</button>
-    <button class="filter-btn">Female</button>
     <button class="filter-btn">Male</button>
+    <button class="filter-btn">Female</button>
     <button class="filter-btn">Hifz</button>
     <button class="filter-btn">Tajweed</button>
   </div>
 
   <!-- 🔥 POPULAR -->
   <div class="section">
-    <h3>🔥 Popular Near You</h3>
-    <div class="horizontal-scroll" id="popularList"></div>
+
+    <div class="section-header">
+      <h3>🔥 Popular Near You</h3>
+      <span class="see-all" onclick="togglePopular()">See all</span>
+    </div>
+
+    <div class="horizontal-scroll" id="popularList">
+      <!-- JS will insert data -->
+    </div>
+
   </div>
 
-  <!-- 🧑‍🏫 USTAZ LIST (DYNAMIC) -->
-  <div class="ustaz-list" id="ustazList"></div>
+  <!-- 🧑‍🏫 USTAZ LIST -->
+  <div class="ustaz-list" id="ustazList">
+    <!-- JS renders here -->
+  </div>
 
 </div>
 
@@ -81,14 +110,29 @@
   </div>
 </div>
 
-<!-- 🔻 NAV -->
+<!-- 🔻 BOTTOM NAV -->
 <div class="bottom-nav">
-  <div class="nav-item active">🏠</div>
-  <div class="nav-item">📚</div>
-  <div class="nav-item">💬</div>
-  <div class="nav-item">👤</div>
+
+  <div class="nav-item active">
+    <i class="fa-solid fa-house"></i>
+  </div>
+
+  <div class="nav-item">
+    <i class="fa-solid fa-book-open"></i>
+  </div>
+
+  <div class="nav-item">
+    <i class="fa-solid fa-message"></i>
+  </div>
+
+  <div class="nav-item">
+    <i class="fa-solid fa-user"></i>
+  </div>
+
 </div>
 
+<!-- JS -->
 <script src="script.js"></script>
+
 </body>
 </html>
