@@ -7,8 +7,9 @@ let currentLocation = "Bole";
 let showAllPopular = false;
 let currentLang = "en";
 
+
 // ==============================
-// TRANSLATIONS
+// LANGUAGE DATA
 // ==============================
 const translations = {
   en: {
@@ -33,8 +34,9 @@ const translations = {
   }
 };
 
+
 // ==============================
-// DATA
+// USTAZ DATA (10 USERS)
 // ==============================
 const ustazData = [
   {id:1,name:"Ahmed Ali",gender:"male",subjects:["Tajweed","Hifz"],location:"Bole",distance:1.2,mosque:"Anwar Mosque",rating:4.7,available:true},
@@ -42,12 +44,14 @@ const ustazData = [
   {id:3,name:"Mohamed Yusuf",gender:"male",subjects:["Tajweed"],location:"Yeka",distance:1.5,mosque:"Yeka Mosque",rating:4.8,available:true},
   {id:4,name:"Ibrahim Hassan",gender:"male",subjects:["Quran Basics"],location:"Kirkos",distance:2.2,mosque:"Kirkos Mosque",rating:4.5,available:false},
   {id:5,name:"Omar Faruk",gender:"male",subjects:["Hifz"],location:"Kolfe",distance:3.0,mosque:"Kolfe Mosque",rating:4.4,available:true},
+
   {id:6,name:"Fatima Hassan",gender:"female",subjects:["Quran Basics"],location:"Yeka",distance:2.0,mosque:"Yeka Mosque",rating:4.9,available:true},
   {id:7,name:"Aisha Ali",gender:"female",subjects:["Tajweed"],location:"Bole",distance:1.1,mosque:"Anwar Mosque",rating:4.8,available:true},
   {id:8,name:"Khadija Noor",gender:"female",subjects:["Hifz"],location:"Kolfe",distance:2.5,mosque:"Kolfe Mosque",rating:4.7,available:false},
   {id:9,name:"Maryam Ahmed",gender:"female",subjects:["Quran Basics"],location:"Kirkos",distance:1.9,mosque:"Kirkos Mosque",rating:4.6,available:true},
   {id:10,name:"Safiya Yusuf",gender:"female",subjects:["Tajweed"],location:"Bole",distance:0.9,mosque:"Bilal Mosque",rating:4.9,available:true}
 ];
+
 
 // ==============================
 // INIT
@@ -56,21 +60,23 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAll();
 
   initFilters();
-  initLocation();
+  initNav();
+  initModal();
   initSearch();
+  initTheme();
+  initLocation();
   initSeeAll();
   initLanguage();
-  initTheme();
-  initScrollButtons();
-  initModal();
 });
 
+
 // ==============================
-// HELPERS
+// TRANSLATION HELPER
 // ==============================
 function t(key) {
   return translations[currentLang][key];
 }
+
 
 // ==============================
 // RENDER
@@ -78,29 +84,35 @@ function t(key) {
 function renderAll() {
   applyFilters();
   renderPopular();
+  applyLanguage();
 }
 
+
 // ==============================
-// LOCATION (FIXED)
+// LOCATION DROPDOWN (FIXED)
 // ==============================
 function initLocation() {
   const box = document.getElementById("locationBox");
   const dropdown = document.getElementById("locationDropdown");
   const label = document.getElementById("selectedLocation");
 
-  box.onclick = (e) => {
+  if (!box || !dropdown) return;
+
+  box.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("active");
-  };
+  });
 
-  document.querySelectorAll(".location-item").forEach(item => {
-    item.onclick = (e) => {
+  dropdown.querySelectorAll("p").forEach(item => {
+    item.addEventListener("click", (e) => {
       e.stopPropagation();
+
       currentLocation = item.innerText.split(",")[0];
       label.innerText = item.innerText;
+
       dropdown.classList.remove("active");
       applyFilters();
-    };
+    });
   });
 
   document.addEventListener("click", () => {
@@ -108,21 +120,26 @@ function initLocation() {
   });
 }
 
+
 // ==============================
 // FILTERS
 // ==============================
 function initFilters() {
   document.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.onclick = () => {
+    btn.addEventListener("click", () => {
       document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
       currentFilter = btn.innerText;
       applyFilters();
-    };
+    });
   });
 }
 
+
+// ==============================
+// APPLY FILTERS
+// ==============================
 function applyFilters() {
   let filtered = ustazData.filter(u => u.location === currentLocation);
 
@@ -134,17 +151,13 @@ function applyFilters() {
   renderUstazList(filtered);
 }
 
+
 // ==============================
-// LIST
+// RENDER LIST
 // ==============================
 function renderUstazList(data) {
   const container = document.getElementById("ustazList");
   container.innerHTML = "";
-
-  if (data.length === 0) {
-    container.innerHTML = "<p>No ustaz found</p>";
-    return;
-  }
 
   data.forEach(u => {
     container.innerHTML += `
@@ -153,29 +166,38 @@ function renderUstazList(data) {
 
         <div class="ustaz-info">
           <div class="top-row">
-            <h4>${u.name}</h4>
-            <span>⭐ ${u.rating}</span>
+            <h4 class="name">${u.name} ✔️</h4>
+            <span class="rating">⭐ ${u.rating}</span>
           </div>
 
-          <p>${u.subjects.join(" • ")}</p>
-          <p>📍 ${u.location}</p>
+          <p class="subjects">${u.subjects.join(" • ")}</p>
+          <p class="location-text">📍 ${u.location} (${u.distance} km)</p>
+          <p class="mosque">🕌 ${u.mosque}</p>
 
-          <p>
+          <p class="status ${u.available ? "available" : ""}">
             ${u.available ? "🟢 " + t("available") : "🔴 " + t("notAvailable")}
           </p>
 
           <div class="actions">
-            <button class="chat-btn">${t("chat")}</button>
-            <button class="view-btn">${t("view")} →</button>
+            <button class="chat-btn" data-id="${u.id}">
+              💬 ${t("chat")}
+            </button>
+
+            <button class="view-btn" data-id="${u.id}">
+              ${t("view")} →
+            </button>
           </div>
         </div>
       </div>
     `;
   });
+
+  attachEvents();
 }
 
+
 // ==============================
-// POPULAR
+// POPULAR (CLICKABLE)
 // ==============================
 function renderPopular() {
   const container = document.getElementById("popularList");
@@ -187,57 +209,132 @@ function renderPopular() {
 
   sorted.forEach(u => {
     container.innerHTML += `
-      <div class="small-card" onclick="openModal()">
+      <div class="small-card" data-id="${u.id}">
         <div class="avatar"></div>
-        <p>${u.name.split(" ")[0]}</p>
-        <p>⭐ ${u.rating}</p>
+        <p class="small-name">${u.name.split(" ")[0]}</p>
+        <p class="small-rating">⭐ ${u.rating}</p>
       </div>
     `;
   });
+
+  // CLICK EVENT
+  document.querySelectorAll(".small-card").forEach(card => {
+    card.onclick = () => openModal();
+  });
 }
+
 
 // ==============================
 // SEE ALL
 // ==============================
 function initSeeAll() {
-  document.getElementById("seeAllBtn").onclick = () => {
+  const btn = document.getElementById("seeAllBtn");
+
+  btn.addEventListener("click", () => {
     showAllPopular = !showAllPopular;
+    btn.innerText = showAllPopular ? t("showLess") : t("seeAll");
     renderPopular();
-  };
+  });
 }
+
 
 // ==============================
 // SEARCH
 // ==============================
 function initSearch() {
-  document.getElementById("searchInput").oninput = (e) => {
-    const val = e.target.value.toLowerCase();
+  const input = document.getElementById("searchInput");
+
+  input.addEventListener("input", () => {
+    const val = input.value.toLowerCase();
 
     const filtered = ustazData.filter(u =>
-      u.name.toLowerCase().includes(val)
+      u.name.toLowerCase().includes(val) ||
+      u.subjects.join(" ").toLowerCase().includes(val)
     );
 
     renderUstazList(filtered);
-  };
+  });
 }
 
+
 // ==============================
-// LANGUAGE (FIXED SIMPLE)
+// EVENTS (CHAT / VIEW)
+// ==============================
+function attachEvents() {
+  document.querySelectorAll(".chat-btn").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      if (!loggedIn) openModal();
+      else openTelegramChat(btn.dataset.id);
+    };
+  });
+
+  document.querySelectorAll(".view-btn").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      openModal();
+    };
+  });
+}
+
+
+// ==============================
+// LANGUAGE SWITCH (FIXED)
 // ==============================
 function initLanguage() {
-  const switchBtn = document.getElementById("langSwitch");
+  document.querySelectorAll(".lang").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".lang").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
 
-  switchBtn.onclick = () => {
-    currentLang = currentLang === "en" ? "am" : "en";
-    applyLanguage();
-  };
+      currentLang = btn.dataset.lang;
+      applyLanguage();
+    });
+  });
 }
 
 function applyLanguage() {
   document.getElementById("searchInput").placeholder = t("search");
-  document.querySelector(".section-title").innerText = "🔥 " + t("popular");
+
+  const seeAllBtn = document.getElementById("seeAllBtn");
+  seeAllBtn.innerText = showAllPopular ? t("showLess") : t("seeAll");
+
+  document.querySelector(".section-header h3").innerText = "🔥 " + t("popular");
+
   renderAll();
 }
+
+
+// ==============================
+// MODAL
+// ==============================
+function initModal() {
+  const modal = document.getElementById("authModal");
+  const closeBtn = document.getElementById("closeModal");
+
+  window.openModal = () => modal.style.display = "flex";
+  window.closeModal = () => modal.style.display = "none";
+
+  closeBtn.onclick = closeModal;
+
+  window.onclick = (e) => {
+    if (e.target === modal) closeModal();
+  };
+}
+
+
+// ==============================
+// NAV
+// ==============================
+function initNav() {
+  document.querySelectorAll(".nav-item").forEach(item => {
+    item.onclick = () => {
+      document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
+      item.classList.add("active");
+    };
+  });
+}
+
 
 // ==============================
 // THEME
@@ -250,38 +347,10 @@ function initTheme() {
   };
 }
 
-// ==============================
-// SCROLL BUTTONS
-// ==============================
-function initScrollButtons() {
-  const list = document.getElementById("popularList");
-
-  document.getElementById("scrollLeft").onclick = () => {
-    list.scrollBy({ left: -200, behavior: "smooth" });
-  };
-
-  document.getElementById("scrollRight").onclick = () => {
-    list.scrollBy({ left: 200, behavior: "smooth" });
-  };
-}
 
 // ==============================
-// MODAL
+// TELEGRAM
 // ==============================
-function initModal() {
-  const modal = document.getElementById("authModal");
-
-  window.openModal = () => modal.style.display = "flex";
-  window.closeModal = () => modal.style.display = "none";
-
-  document.getElementById("closeModal").onclick = closeModal;
-}
-
-// ==============================
-// HERO BUTTON FIX
-// ==============================
-function scrollToList() {
-  document.getElementById("ustazList").scrollIntoView({
-    behavior: "smooth"
-  });
+function openTelegramChat(id) {
+  alert("Opening chat with ID: " + id);
 }
