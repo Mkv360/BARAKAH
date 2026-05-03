@@ -19,48 +19,75 @@
 
 <div id="mainView">
 
-  <!-- ================= HEADER ================= -->
+  <!-- 🔝 TOP BAR -->
   <div class="top-bar">
 
-    <div class="logo-area">
-      <h2 class="app-name">Baraka<span class="green">Link</span></h2>
-      <p class="tagline">Connect with Quran Teachers.</p>
+    <div class="top-left">
+      <h2 class="app-name">
+        Baraka<span class="green">Link</span>
+      </h2>
+
+      <!-- 📍 LOCATION SELECT -->
+      <div class="location-box" id="locationBox">
+        <i class="fa-solid fa-location-dot"></i>
+        <span id="selectedLocation">Bole, Addis Ababa</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
     </div>
 
-    <!-- THEME SWITCH (LIKE IMAGE) -->
-    <div class="theme-switch">
-      <span class="theme-btn active" id="darkModeBtn">🌙 Dark</span>
-      <span class="theme-btn" id="lightModeBtn">☀️ Light</span>
+    <!-- RIGHT SIDE -->
+    <div class="top-icons">
+
+      <!-- 🌙 THEME -->
+      <span class="icon theme-toggle">
+        <i class="fa-solid fa-moon"></i>
+      </span>
+
+      <!-- 🌍 LANGUAGE SWITCH -->
+      <div class="lang-switch" id="langSwitch">
+        <span class="lang active">EN</span>
+        <span class="lang">አማ</span>
+      </div>
+
     </div>
 
   </div>
 
-  <!-- ================= LOCATION + SEARCH ================= -->
-  <div class="top-controls">
-
-    <!-- LOCATION -->
-    <div class="location-box" id="locationBox">
-      <i class="fa-solid fa-location-dot"></i>
-      <span id="selectedLocation">Bole, Addis Ababa</span>
-      <i class="fa-solid fa-chevron-down"></i>
-    </div>
-
-    <!-- SEARCH -->
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search ustaz or subject...">
-    </div>
-
-  </div>
-
-  <!-- LOCATION DROPDOWN -->
+  <!-- 📍 LOCATION DROPDOWN -->
   <div class="location-dropdown" id="locationDropdown">
-    <div class="location-item" data-value="Bole">Bole</div>
-    <div class="location-item" data-value="Yeka">Yeka</div>
-    <div class="location-item" data-value="Kirkos">Kirkos</div>
-    <div class="location-item" data-value="Kolfe">Kolfe</div>
+    <div class="location-item">Bole, Addis Ababa</div>
+    <div class="location-item">Yeka, Addis Ababa</div>
+    <div class="location-item">Kirkos, Addis Ababa</div>
+    <div class="location-item">Kolfe, Addis Ababa</div>
   </div>
 
-  <!-- ================= FILTERS ================= -->
+  <!-- 🌟 HERO -->
+  <div class="hero">
+
+    <div class="hero-badge">
+      🕌 Find Trusted Quran Teachers Near You
+    </div>
+
+    <h1 class="hero-title">
+      Connecting You with Qualified Quran Ustaz Easily.
+    </h1>
+
+    <p class="hero-subtitle">
+      Find trusted, nearby Quran teachers for Tajweed, Hifz, and more — quickly and safely.
+    </p>
+
+    <button class="hero-btn" onclick="scrollToList()">
+      Find Ustaz ↓
+    </button>
+
+  </div>
+
+  <!-- 🔍 SEARCH -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search ustaz or subject...">
+  </div>
+
+  <!-- ⚡ FILTERS -->
   <div class="filters">
     <button class="filter-btn active">All</button>
     <button class="filter-btn">Male</button>
@@ -69,65 +96,59 @@
     <button class="filter-btn">Tajweed</button>
   </div>
 
-  <!-- ================= POPULAR ================= -->
+  <!-- 🔥 POPULAR -->
   <div class="section">
 
     <div class="section-header">
-      <h3>Popular Near You</h3>
+      <h3>🔥 Popular Near You</h3>
       <span class="see-all" id="seeAllBtn">See all</span>
     </div>
 
-    <div class="popular-wrapper">
-
-      <button class="scroll-btn left" id="scrollLeft">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-
-      <div class="horizontal-scroll" id="popularList">
-        <!-- JS -->
-      </div>
-
-      <button class="scroll-btn right" id="scrollRight">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-
+    <div class="horizontal-scroll" id="popularList">
+      <!-- JS inserts -->
     </div>
 
   </div>
 
-  <!-- ================= USTAZ LIST ================= -->
-  <div class="section">
-
-    <div class="section-header">
-      <h3>All Ustaz</h3>
-    </div>
-
-    <div class="ustaz-list" id="ustazList">
-      <!-- JS -->
-    </div>
-
+  <!-- 🧑‍🏫 USTAZ LIST -->
+  <div class="ustaz-list" id="ustazList">
+    <!-- JS renders -->
   </div>
 
 </div>
 
-<!-- ================= MODAL ================= -->
+<!-- 🔐 AUTH MODAL -->
 <div class="modal" id="authModal">
   <div class="modal-content">
     <h3>Sign up to contact</h3>
     <p>Create an account to chat with this ustaz</p>
-    <button class="chat-btn">Sign up</button>
+    <button class="chat-btn">Sign up as Parent</button>
     <button class="view-btn" id="closeModal">Cancel</button>
   </div>
 </div>
 
-<!-- ================= NAV ================= -->
+<!-- 🔻 BOTTOM NAV -->
 <div class="bottom-nav">
-  <div class="nav-item active"><i class="fa-solid fa-house"></i></div>
-  <div class="nav-item"><i class="fa-solid fa-book-open"></i></div>
-  <div class="nav-item"><i class="fa-solid fa-message"></i></div>
-  <div class="nav-item"><i class="fa-solid fa-user"></i></div>
+
+  <div class="nav-item active">
+    <i class="fa-solid fa-house"></i>
+  </div>
+
+  <div class="nav-item">
+    <i class="fa-solid fa-book-open"></i>
+  </div>
+
+  <div class="nav-item">
+    <i class="fa-solid fa-message"></i>
+  </div>
+
+  <div class="nav-item">
+    <i class="fa-solid fa-user"></i>
+  </div>
+
 </div>
 
+<!-- JS -->
 <script src="script.js"></script>
 
 </body>
