@@ -7,7 +7,6 @@ let currentLocation = "Bole";
 let showAllPopular = false;
 let currentLang = "en";
 
-
 // ==============================
 // TRANSLATIONS
 // ==============================
@@ -34,11 +33,6 @@ const translations = {
   }
 };
 
-function t(key) {
-  return translations[currentLang][key];
-}
-
-
 // ==============================
 // DATA
 // ==============================
@@ -48,14 +42,12 @@ const ustazData = [
   {id:3,name:"Mohamed Yusuf",gender:"male",subjects:["Tajweed"],location:"Yeka",distance:1.5,mosque:"Yeka Mosque",rating:4.8,available:true},
   {id:4,name:"Ibrahim Hassan",gender:"male",subjects:["Quran Basics"],location:"Kirkos",distance:2.2,mosque:"Kirkos Mosque",rating:4.5,available:false},
   {id:5,name:"Omar Faruk",gender:"male",subjects:["Hifz"],location:"Kolfe",distance:3.0,mosque:"Kolfe Mosque",rating:4.4,available:true},
-
   {id:6,name:"Fatima Hassan",gender:"female",subjects:["Quran Basics"],location:"Yeka",distance:2.0,mosque:"Yeka Mosque",rating:4.9,available:true},
   {id:7,name:"Aisha Ali",gender:"female",subjects:["Tajweed"],location:"Bole",distance:1.1,mosque:"Anwar Mosque",rating:4.8,available:true},
   {id:8,name:"Khadija Noor",gender:"female",subjects:["Hifz"],location:"Kolfe",distance:2.5,mosque:"Kolfe Mosque",rating:4.7,available:false},
   {id:9,name:"Maryam Ahmed",gender:"female",subjects:["Quran Basics"],location:"Kirkos",distance:1.9,mosque:"Kirkos Mosque",rating:4.6,available:true},
   {id:10,name:"Safiya Yusuf",gender:"female",subjects:["Tajweed"],location:"Bole",distance:0.9,mosque:"Bilal Mosque",rating:4.9,available:true}
 ];
-
 
 // ==============================
 // INIT
@@ -65,56 +57,72 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initFilters();
   initLocation();
-  initSeeAll();
   initSearch();
+  initSeeAll();
   initLanguage();
   initTheme();
   initScrollButtons();
-  initFindButton();
+  initModal();
 });
 
+// ==============================
+// HELPERS
+// ==============================
+function t(key) {
+  return translations[currentLang][key];
+}
 
 // ==============================
-// RENDER ALL
+// RENDER
 // ==============================
 function renderAll() {
-  renderPopular();
   applyFilters();
-  applyLanguage();
+  renderPopular();
 }
 
-
 // ==============================
-// POPULAR
+// LOCATION (FIXED)
 // ==============================
-function renderPopular() {
-  const container = document.getElementById("popularList");
-  if (!container) return;
+function initLocation() {
+  const box = document.getElementById("locationBox");
+  const dropdown = document.getElementById("locationDropdown");
+  const label = document.getElementById("selectedLocation");
 
-  let sorted = [...ustazData].sort((a,b)=>b.rating-a.rating);
-  if (!showAllPopular) sorted = sorted.slice(0,5);
+  box.onclick = (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("active");
+  };
 
-  container.innerHTML = "";
-
-  sorted.forEach(u => {
-    container.innerHTML += `
-      <div class="small-card" data-id="${u.id}">
-        <div class="avatar"></div>
-        <p class="small-name">${u.name.split(" ")[0]}</p>
-        <p class="small-rating">⭐ ${u.rating}</p>
-      </div>
-    `;
+  document.querySelectorAll(".location-item").forEach(item => {
+    item.onclick = (e) => {
+      e.stopPropagation();
+      currentLocation = item.innerText.split(",")[0];
+      label.innerText = item.innerText;
+      dropdown.classList.remove("active");
+      applyFilters();
+    };
   });
 
-  document.querySelectorAll(".small-card").forEach(card => {
-    card.onclick = () => openModal();
+  document.addEventListener("click", () => {
+    dropdown.classList.remove("active");
   });
 }
-
 
 // ==============================
 // FILTERS
 // ==============================
+function initFilters() {
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      currentFilter = btn.innerText;
+      applyFilters();
+    };
+  });
+}
+
 function applyFilters() {
   let filtered = ustazData.filter(u => u.location === currentLocation);
 
@@ -126,15 +134,17 @@ function applyFilters() {
   renderUstazList(filtered);
 }
 
-
 // ==============================
 // LIST
 // ==============================
 function renderUstazList(data) {
   const container = document.getElementById("ustazList");
-  if (!container) return;
-
   container.innerHTML = "";
+
+  if (data.length === 0) {
+    container.innerHTML = "<p>No ustaz found</p>";
+    return;
+  }
 
   data.forEach(u => {
     container.innerHTML += `
@@ -149,15 +159,14 @@ function renderUstazList(data) {
 
           <p>${u.subjects.join(" • ")}</p>
           <p>📍 ${u.location}</p>
-          <p>🕌 ${u.mosque}</p>
 
-          <p class="${u.available ? "available" : ""}">
+          <p>
             ${u.available ? "🟢 " + t("available") : "🔴 " + t("notAvailable")}
           </p>
 
           <div class="actions">
             <button class="chat-btn">${t("chat")}</button>
-            <button class="view-btn">${t("view")}</button>
+            <button class="view-btn">${t("view")} →</button>
           </div>
         </div>
       </div>
@@ -165,57 +174,44 @@ function renderUstazList(data) {
   });
 }
 
-
 // ==============================
-// LOCATION
+// POPULAR
 // ==============================
-function initLocation() {
-  const box = document.getElementById("locationBox");
-  const dropdown = document.getElementById("locationDropdown");
+function renderPopular() {
+  const container = document.getElementById("popularList");
 
-  if (!box || !dropdown) return;
+  let sorted = [...ustazData].sort((a,b)=>b.rating-a.rating);
+  if (!showAllPopular) sorted = sorted.slice(0,5);
 
-  box.onclick = (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("active");
-  };
+  container.innerHTML = "";
 
-  dropdown.querySelectorAll(".location-item").forEach(item => {
-    item.onclick = () => {
-      currentLocation = item.dataset.value;
-      dropdown.classList.remove("active");
-      renderAll();
-    };
+  sorted.forEach(u => {
+    container.innerHTML += `
+      <div class="small-card" onclick="openModal()">
+        <div class="avatar"></div>
+        <p>${u.name.split(" ")[0]}</p>
+        <p>⭐ ${u.rating}</p>
+      </div>
+    `;
   });
-
-  document.onclick = () => dropdown.classList.remove("active");
 }
-
 
 // ==============================
 // SEE ALL
 // ==============================
 function initSeeAll() {
-  const btn = document.getElementById("seeAllBtn");
-  if (!btn) return;
-
-  btn.onclick = () => {
+  document.getElementById("seeAllBtn").onclick = () => {
     showAllPopular = !showAllPopular;
     renderPopular();
-    applyLanguage();
   };
 }
-
 
 // ==============================
 // SEARCH
 // ==============================
 function initSearch() {
-  const input = document.getElementById("searchInput");
-  if (!input) return;
-
-  input.oninput = () => {
-    const val = input.value.toLowerCase();
+  document.getElementById("searchInput").oninput = (e) => {
+    const val = e.target.value.toLowerCase();
 
     const filtered = ustazData.filter(u =>
       u.name.toLowerCase().includes(val)
@@ -225,78 +221,67 @@ function initSearch() {
   };
 }
 
-
 // ==============================
-// LANGUAGE
+// LANGUAGE (FIXED SIMPLE)
 // ==============================
 function initLanguage() {
-  document.querySelectorAll(".lang").forEach(btn => {
-    btn.onclick = () => {
-      currentLang = btn.dataset.lang;
-      document.querySelectorAll(".lang").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      applyLanguage();
-    };
-  });
+  const switchBtn = document.getElementById("langSwitch");
+
+  switchBtn.onclick = () => {
+    currentLang = currentLang === "en" ? "am" : "en";
+    applyLanguage();
+  };
 }
 
 function applyLanguage() {
-  const input = document.getElementById("searchInput");
-  if (input) input.placeholder = t("search");
-
-  const seeAll = document.getElementById("seeAllBtn");
-  if (seeAll) seeAll.innerText = showAllPopular ? t("showLess") : t("seeAll");
-
-  const title = document.querySelector(".section-header h3");
-  if (title) title.innerText = "🔥 " + t("popular");
+  document.getElementById("searchInput").placeholder = t("search");
+  document.querySelector(".section-title").innerText = "🔥 " + t("popular");
+  renderAll();
 }
-
 
 // ==============================
 // THEME
 // ==============================
 function initTheme() {
   const toggle = document.querySelector(".theme-toggle");
-  if (!toggle) return;
 
   toggle.onclick = () => {
     document.body.classList.toggle("light-mode");
   };
 }
 
-
 // ==============================
 // SCROLL BUTTONS
 // ==============================
 function initScrollButtons() {
-  const left = document.getElementById("scrollLeft");
-  const right = document.getElementById("scrollRight");
   const list = document.getElementById("popularList");
 
-  if (!left || !right || !list) return;
+  document.getElementById("scrollLeft").onclick = () => {
+    list.scrollBy({ left: -200, behavior: "smooth" });
+  };
 
-  left.onclick = () => list.scrollBy({ left: -200, behavior: "smooth" });
-  right.onclick = () => list.scrollBy({ left: 200, behavior: "smooth" });
-}
-
-
-// ==============================
-// FIND BUTTON
-// ==============================
-function initFindButton() {
-  const btn = document.getElementById("findBtn");
-  if (!btn) return;
-
-  btn.onclick = () => {
-    document.getElementById("ustazList").scrollIntoView({ behavior: "smooth" });
+  document.getElementById("scrollRight").onclick = () => {
+    list.scrollBy({ left: 200, behavior: "smooth" });
   };
 }
-
 
 // ==============================
 // MODAL
 // ==============================
-function openModal() {
+function initModal() {
   const modal = document.getElementById("authModal");
-  if (modal) modal.style.display = "flex";
+
+  window.openModal = () => modal.style.display = "flex";
+  window.closeModal = () => modal.style.display = "none";
+
+  document.getElementById("closeModal").onclick = closeModal;
+}
+
+// ==============================
+// HERO BUTTON FIX
+// ==============================
+function scrollToList() {
+  document.getElementById("ustazList").scrollIntoView({
+    behavior: "smooth"
+  });
 }
