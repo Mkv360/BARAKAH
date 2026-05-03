@@ -5,9 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BarakaLink - Find Ustaz</title>
 
+  <!-- Telegram -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+  <!-- Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -15,34 +19,35 @@
 
 <div id="mainView">
 
-  <!-- TOP BAR -->
+  <!-- ================= HEADER ================= -->
   <div class="top-bar">
 
-    <div>
+    <div class="logo-area">
       <h2 class="app-name">Baraka<span class="green">Link</span></h2>
-
-      <!-- LOCATION -->
-      <div class="location-box" id="locationBox">
-        <i class="fa-solid fa-location-dot"></i>
-        <span id="selectedLocation">Bole</span>
-        <i class="fa-solid fa-chevron-down"></i>
-      </div>
+      <p class="tagline">Connect with Quran Teachers.</p>
     </div>
 
-    <!-- RIGHT -->
-    <div class="top-icons">
+    <!-- THEME SWITCH (LIKE IMAGE) -->
+    <div class="theme-switch">
+      <span class="theme-btn active" id="darkModeBtn">🌙 Dark</span>
+      <span class="theme-btn" id="lightModeBtn">☀️ Light</span>
+    </div>
 
-      <!-- THEME -->
-      <span class="icon theme-toggle">
-        <i class="fa-solid fa-moon"></i>
-      </span>
+  </div>
 
-      <!-- LANGUAGE -->
-      <div class="lang-switch">
-        <span class="lang active" data-lang="en">EN</span>
-        <span class="lang" data-lang="am">አማ</span>
-      </div>
+  <!-- ================= LOCATION + SEARCH ================= -->
+  <div class="top-controls">
 
+    <!-- LOCATION -->
+    <div class="location-box" id="locationBox">
+      <i class="fa-solid fa-location-dot"></i>
+      <span id="selectedLocation">Bole, Addis Ababa</span>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search ustaz or subject...">
     </div>
 
   </div>
@@ -55,34 +60,7 @@
     <div class="location-item" data-value="Kolfe">Kolfe</div>
   </div>
 
-  <!-- HERO -->
-  <div class="hero">
-
-    <div class="hero-badge">
-      🕌 Find Trusted Quran Teachers Near You
-    </div>
-
-    <h1 class="hero-title">
-      Connecting You with Qualified Quran Ustaz Easily.
-    </h1>
-
-    <p class="hero-subtitle">
-      Find trusted, nearby Quran teachers quickly and safely.
-    </p>
-
-    <!-- FIXED BUTTON -->
-    <button class="hero-btn" id="findBtn">
-      Find Ustaz ↓
-    </button>
-
-  </div>
-
-  <!-- SEARCH -->
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search ustaz or subject...">
-  </div>
-
-  <!-- FILTERS -->
+  <!-- ================= FILTERS ================= -->
   <div class="filters">
     <button class="filter-btn active">All</button>
     <button class="filter-btn">Male</button>
@@ -91,11 +69,11 @@
     <button class="filter-btn">Tajweed</button>
   </div>
 
-  <!-- POPULAR -->
+  <!-- ================= POPULAR ================= -->
   <div class="section">
 
     <div class="section-header">
-      <h3>🔥 Popular Near You</h3>
+      <h3>Popular Near You</h3>
       <span class="see-all" id="seeAllBtn">See all</span>
     </div>
 
@@ -105,7 +83,9 @@
         <i class="fa-solid fa-chevron-left"></i>
       </button>
 
-      <div class="horizontal-scroll" id="popularList"></div>
+      <div class="horizontal-scroll" id="popularList">
+        <!-- JS -->
+      </div>
 
       <button class="scroll-btn right" id="scrollRight">
         <i class="fa-solid fa-chevron-right"></i>
@@ -115,18 +95,22 @@
 
   </div>
 
-  <!-- USTAZ LIST -->
+  <!-- ================= USTAZ LIST ================= -->
   <div class="section">
+
     <div class="section-header">
-      <h3>🧑‍🏫 Available Ustaz</h3>
+      <h3>All Ustaz</h3>
     </div>
 
-    <div class="ustaz-list" id="ustazList"></div>
+    <div class="ustaz-list" id="ustazList">
+      <!-- JS -->
+    </div>
+
   </div>
 
 </div>
 
-<!-- MODAL -->
+<!-- ================= MODAL ================= -->
 <div class="modal" id="authModal">
   <div class="modal-content">
     <h3>Sign up to contact</h3>
@@ -136,7 +120,7 @@
   </div>
 </div>
 
-<!-- NAV -->
+<!-- ================= NAV ================= -->
 <div class="bottom-nav">
   <div class="nav-item active"><i class="fa-solid fa-house"></i></div>
   <div class="nav-item"><i class="fa-solid fa-book-open"></i></div>
