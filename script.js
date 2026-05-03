@@ -2,10 +2,13 @@
 // STATE
 // ==============================
 let loggedIn = false;
+let currentFilter = "All";
+let currentLocation = "Bole";
+let showAllPopular = false;
 
 
 // ==============================
-// USTAZ DATA (REAL SYSTEM)
+// USTAZ DATA
 // ==============================
 const ustazData = [
   {
@@ -43,22 +46,30 @@ const ustazData = [
   }
 ];
 
-let currentFilter = "All";
-
 
 // ==============================
 // INIT
 // ==============================
 document.addEventListener("DOMContentLoaded", () => {
-  renderUstazList(ustazData);
-  renderPopular();
+  renderAll();
 
   initFilters();
   initNav();
   initModal();
   initSearch();
   initTheme();
+  initLocation();
+  initSeeAll();
 });
+
+
+// ==============================
+// RENDER ALL
+// ==============================
+function renderAll() {
+  applyFilters();
+  renderPopular();
+}
 
 
 // ==============================
@@ -118,13 +129,16 @@ function renderUstazList(data) {
 function renderPopular() {
   const container = document.getElementById("popularList");
 
-  const topRated = [...ustazData]
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, 5);
+  let sorted = [...ustazData]
+    .sort((a, b) => b.rating - a.rating);
+
+  if (!showAllPopular) {
+    sorted = sorted.slice(0, 5);
+  }
 
   container.innerHTML = "";
 
-  topRated.forEach(u => {
+  sorted.forEach(u => {
     container.innerHTML += `
       <div class="small-card">
         <div class="avatar"></div>
@@ -137,34 +151,49 @@ function renderPopular() {
 
 
 // ==============================
-// EVENTS FOR DYNAMIC ELEMENTS
+// SEE ALL BUTTON
 // ==============================
-function attachEvents() {
-  // Chat
-  document.querySelectorAll(".chat-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
+function initSeeAll() {
+  const seeAllBtn = document.getElementById("seeAllBtn");
 
-      if (!loggedIn) {
-        openModal();
-      } else {
-        openTelegramChat(btn.dataset.id);
-      }
-    });
-  });
+  if (!seeAllBtn) return;
 
-  // View
-  document.querySelectorAll(".view-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const id = btn.dataset.id;
-      console.log("Open profile:", id);
-    });
+  seeAllBtn.onclick = () => {
+    showAllPopular = !showAllPopular;
+    seeAllBtn.innerText = showAllPopular ? "Show Less" : "See All";
+    renderPopular();
+  };
+}
+
+
+// ==============================
+// LOCATION DROPDOWN
+// ==============================
+function initLocation() {
+  const locationText = document.querySelector(".location");
+  const dropdown = document.getElementById("locationDropdown");
+
+  if (!locationText || !dropdown) return;
+
+  locationText.onclick = () => {
+    dropdown.style.display =
+      dropdown.style.display === "flex" ? "none" : "flex";
+  };
+
+  dropdown.querySelectorAll("div").forEach(item => {
+    item.onclick = () => {
+      currentLocation = item.innerText;
+      locationText.innerText = `📍 ${currentLocation} ▼`;
+      dropdown.style.display = "none";
+
+      applyFilters();
+    };
   });
 }
 
 
 // ==============================
-// FILTER SYSTEM (REAL)
+// FILTER SYSTEM (COMBINED)
 // ==============================
 function initFilters() {
   const buttons = document.querySelectorAll(".filter-btn");
@@ -181,8 +210,14 @@ function initFilters() {
   });
 }
 
+
+// ==============================
+// APPLY FILTERS + LOCATION
+// ==============================
 function applyFilters() {
-  let filtered = [...ustazData];
+  let filtered = ustazData.filter(u =>
+    u.location === currentLocation
+  );
 
   if (currentFilter === "Female") {
     filtered = filtered.filter(u => u.gender === "female");
@@ -193,15 +228,11 @@ function applyFilters() {
   }
 
   if (currentFilter === "Hifz") {
-    filtered = filtered.filter(u =>
-      u.subjects.includes("Hifz")
-    );
+    filtered = filtered.filter(u => u.subjects.includes("Hifz"));
   }
 
   if (currentFilter === "Tajweed") {
-    filtered = filtered.filter(u =>
-      u.subjects.includes("Tajweed")
-    );
+    filtered = filtered.filter(u => u.subjects.includes("Tajweed"));
   }
 
   renderUstazList(filtered);
@@ -209,7 +240,7 @@ function applyFilters() {
 
 
 // ==============================
-// SEARCH (CONNECTED TO DATA)
+// SEARCH
 // ==============================
 function initSearch() {
   const input = document.getElementById("searchInput");
@@ -231,13 +262,37 @@ function initSearch() {
 
 
 // ==============================
+// EVENTS (CHAT / VIEW)
+// ==============================
+function attachEvents() {
+  document.querySelectorAll(".chat-btn").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+
+      if (!loggedIn) {
+        openModal();
+      } else {
+        openTelegramChat(btn.dataset.id);
+      }
+    };
+  });
+
+  document.querySelectorAll(".view-btn").forEach(btn => {
+    btn.onclick = () => {
+      console.log("Open profile:", btn.dataset.id);
+    };
+  });
+}
+
+
+// ==============================
 // MODAL
 // ==============================
 function initModal() {
   const modal = document.getElementById("authModal");
   const closeBtn = document.getElementById("closeModal");
 
-  window.openModal = () => modal.style.display = "block";
+  window.openModal = () => modal.style.display = "flex";
   window.closeModal = () => modal.style.display = "none";
 
   closeBtn.onclick = closeModal;
@@ -249,7 +304,7 @@ function initModal() {
 
 
 // ==============================
-// NAV
+// NAVIGATION
 // ==============================
 function initNav() {
   document.querySelectorAll(".nav-item").forEach(item => {
@@ -264,7 +319,7 @@ function initNav() {
 
 
 // ==============================
-// THEME
+// THEME TOGGLE
 // ==============================
 function initTheme() {
   const toggle = document.querySelector(".theme-toggle");
