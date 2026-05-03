@@ -71,11 +71,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ==============================
+// TRANSLATION HELPER
+// ==============================
+function t(key) {
+  return translations[currentLang][key];
+}
+
+
+// ==============================
 // RENDER
 // ==============================
 function renderAll() {
   applyFilters();
   renderPopular();
+  applyLanguage();
 }
 
 
@@ -87,18 +96,23 @@ function initLocation() {
   const dropdown = document.getElementById("locationDropdown");
   const label = document.getElementById("selectedLocation");
 
-  box.onclick = (e) => {
+  if (!box || !dropdown) return;
+
+  box.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("active");
-  };
+  });
 
-  dropdown.querySelectorAll(".location-item").forEach(item => {
-    item.onclick = () => {
-      currentLocation = item.dataset.value;
+  dropdown.querySelectorAll("p").forEach(item => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      currentLocation = item.innerText.split(",")[0];
       label.innerText = item.innerText;
+
       dropdown.classList.remove("active");
       applyFilters();
-    };
+    });
   });
 
   document.addEventListener("click", () => {
@@ -112,13 +126,13 @@ function initLocation() {
 // ==============================
 function initFilters() {
   document.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.onclick = () => {
+    btn.addEventListener("click", () => {
       document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
       currentFilter = btn.innerText;
       applyFilters();
-    };
+    });
   });
 }
 
@@ -165,8 +179,13 @@ function renderUstazList(data) {
           </p>
 
           <div class="actions">
-            <button class="chat-btn" data-id="${u.id}">${t("chat")}</button>
-            <button class="view-btn" data-id="${u.id}">${t("view")}</button>
+            <button class="chat-btn" data-id="${u.id}">
+              💬 ${t("chat")}
+            </button>
+
+            <button class="view-btn" data-id="${u.id}">
+              ${t("view")} →
+            </button>
           </div>
         </div>
       </div>
@@ -190,12 +209,17 @@ function renderPopular() {
 
   sorted.forEach(u => {
     container.innerHTML += `
-      <div class="small-card" onclick="openModal()">
+      <div class="small-card" data-id="${u.id}">
         <div class="avatar"></div>
         <p class="small-name">${u.name.split(" ")[0]}</p>
         <p class="small-rating">⭐ ${u.rating}</p>
       </div>
     `;
+  });
+
+  // CLICK EVENT
+  document.querySelectorAll(".small-card").forEach(card => {
+    card.onclick = () => openModal();
   });
 }
 
@@ -206,11 +230,11 @@ function renderPopular() {
 function initSeeAll() {
   const btn = document.getElementById("seeAllBtn");
 
-  btn.onclick = () => {
+  btn.addEventListener("click", () => {
     showAllPopular = !showAllPopular;
     btn.innerText = showAllPopular ? t("showLess") : t("seeAll");
     renderPopular();
-  };
+  });
 }
 
 
@@ -220,7 +244,7 @@ function initSeeAll() {
 function initSearch() {
   const input = document.getElementById("searchInput");
 
-  input.oninput = () => {
+  input.addEventListener("input", () => {
     const val = input.value.toLowerCase();
 
     const filtered = ustazData.filter(u =>
@@ -229,23 +253,25 @@ function initSearch() {
     );
 
     renderUstazList(filtered);
-  };
+  });
 }
 
 
 // ==============================
-// CHAT / VIEW EVENTS
+// EVENTS (CHAT / VIEW)
 // ==============================
 function attachEvents() {
   document.querySelectorAll(".chat-btn").forEach(btn => {
-    btn.onclick = () => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
       if (!loggedIn) openModal();
       else openTelegramChat(btn.dataset.id);
     };
   });
 
   document.querySelectorAll(".view-btn").forEach(btn => {
-    btn.onclick = () => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
       openModal();
     };
   });
@@ -257,23 +283,23 @@ function attachEvents() {
 // ==============================
 function initLanguage() {
   document.querySelectorAll(".lang").forEach(btn => {
-    btn.onclick = () => {
+    btn.addEventListener("click", () => {
       document.querySelectorAll(".lang").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
       currentLang = btn.dataset.lang;
       applyLanguage();
-    };
+    });
   });
-}
-
-function t(key) {
-  return translations[currentLang][key];
 }
 
 function applyLanguage() {
   document.getElementById("searchInput").placeholder = t("search");
-  document.getElementById("seeAllBtn").innerText = t("seeAll");
+
+  const seeAllBtn = document.getElementById("seeAllBtn");
+  seeAllBtn.innerText = showAllPopular ? t("showLess") : t("seeAll");
+
+  document.querySelector(".section-header h3").innerText = "🔥 " + t("popular");
 
   renderAll();
 }
