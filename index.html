@@ -24,40 +24,36 @@
     </div>
 
     <div class="top-icons">
-      <span class="icon">🌙</span>
+      <span class="icon theme-toggle">🌙</span>
       <span class="icon">👤</span>
     </div>
   </div>
 
-  <!-- 🌟 HERO SECTION -->
+  <!-- 🌟 HERO -->
   <div class="hero">
-
-    <div class="hero-badge">
-      🕌 Find Trusted Quran Teachers Near You
-    </div>
+    <div class="hero-badge">🕌 Find Trusted Quran Teachers Near You</div>
 
     <h1 class="hero-title">
       Connecting You with Qualified Quran Ustaz Easily.
     </h1>
 
     <p class="hero-subtitle">
-      BarakaLink helps parents find trusted, nearby Quran teachers for Tajweed, Hifz, and more — quickly and safely.
+      Find trusted, nearby Quran teachers for Tajweed, Hifz, and more — quickly and safely.
     </p>
 
     <button class="hero-btn" onclick="scrollToList()">
       Find Ustaz ↓
     </button>
-
   </div>
 
   <!-- 🔍 SEARCH -->
   <div class="search-bar">
-    <input type="text" placeholder="Search Tajweed, Hifz, Female ustaz...">
+    <input type="text" id="searchInput" placeholder="Search Tajweed, Hifz, Female ustaz...">
   </div>
 
   <!-- ⚡ FILTERS -->
   <div class="filters">
-    <button class="filter-btn active">Nearby</button>
+    <button class="filter-btn active">All</button>
     <button class="filter-btn">Female</button>
     <button class="filter-btn">Male</button>
     <button class="filter-btn">Hifz</button>
@@ -67,49 +63,11 @@
   <!-- 🔥 POPULAR -->
   <div class="section">
     <h3>🔥 Popular Near You</h3>
-    <div class="horizontal-scroll">
-
-      <div class="small-card">
-        <div class="avatar"></div>
-        <p class="small-name">Ahmed</p>
-        <p class="small-rating">⭐ 4.8</p>
-      </div>
-
-      <div class="small-card">
-        <div class="avatar"></div>
-        <p class="small-name">Fatima</p>
-        <p class="small-rating">⭐ 4.9</p>
-      </div>
-
-    </div>
+    <div class="horizontal-scroll" id="popularList"></div>
   </div>
 
-  <!-- 🧑‍🏫 USTAZ LIST -->
-  <div class="ustaz-list">
-
-    <div class="ustaz-card">
-      <div class="avatar"></div>
-
-      <div class="ustaz-info">
-        <div class="top-row">
-          <h4 class="name">Ahmed Ali ✔️</h4>
-          <span class="rating">⭐ 4.7</span>
-        </div>
-
-        <p class="subjects">Tajweed • Hifz</p>
-        <p class="location-text">📍 Bole (1.2 km)</p>
-        <p class="mosque">🕌 Anwar Mosque</p>
-
-        <p class="status available">🟢 Available Today</p>
-
-        <div class="actions">
-          <button class="chat-btn">Chat</button>
-          <button class="view-btn">View</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
+  <!-- 🧑‍🏫 USTAZ LIST (DYNAMIC) -->
+  <div class="ustaz-list" id="ustazList"></div>
 
 </div>
 
@@ -123,17 +81,14 @@
   </div>
 </div>
 
-<!-- 🔻 FLOATING NAV -->
+<!-- 🔻 NAV -->
 <div class="bottom-nav">
   <div class="nav-item active">🏠</div>
-  <div class="nav-item">🧑‍🏫</div>
-  <div class="nav-item">📥</div>
-  <div class="nav-item">ℹ️</div>
+  <div class="nav-item">📚</div>
   <div class="nav-item">💬</div>
+  <div class="nav-item">👤</div>
 </div>
 
-<!-- JS -->
 <script src="script.js"></script>
-
 </body>
 </html>
