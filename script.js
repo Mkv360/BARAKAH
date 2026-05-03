@@ -9,7 +9,7 @@ let currentLang = "en";
 
 
 // ==============================
-// USTAZ DATA (10 USERS)
+// USTAZ DATA
 // ==============================
 const ustazData = [
   {id:1,name:"Ahmed Ali",gender:"male",subjects:["Tajweed","Hifz"],location:"Bole",distance:1.2,mosque:"Anwar Mosque",rating:4.7,available:true},
@@ -31,6 +31,7 @@ const ustazData = [
 // ==============================
 document.addEventListener("DOMContentLoaded", () => {
   renderAll();
+
   initFilters();
   initLocation();
   initSearch();
@@ -38,6 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initLanguage();
   initSeeAll();
   initModal();
+  initScrollButtons();
+  initFindButton();
 });
 
 
@@ -57,6 +60,11 @@ function renderUstazList(data) {
   const container = document.getElementById("ustazList");
   container.innerHTML = "";
 
+  if (data.length === 0) {
+    container.innerHTML = `<p style="color:gray;">No ustaz found</p>`;
+    return;
+  }
+
   data.forEach(u => {
     container.innerHTML += `
       <div class="ustaz-card">
@@ -64,8 +72,8 @@ function renderUstazList(data) {
 
         <div class="ustaz-info">
           <div class="top-row">
-            <h4 class="name">${u.name}</h4>
-            <span class="rating">⭐ ${u.rating}</span>
+            <h4>${u.name}</h4>
+            <span>⭐ ${u.rating}</span>
           </div>
 
           <p class="subjects">${u.subjects.join(" • ")}</p>
@@ -85,34 +93,25 @@ function renderUstazList(data) {
 
 
 // ==============================
-// POPULAR (SCROLLABLE)
+// POPULAR
 // ==============================
 function renderPopular() {
   const container = document.getElementById("popularList");
 
   let list = [...ustazData].sort((a,b)=>b.rating-a.rating);
 
-  if(!showAllPopular){
-    list = list.slice(0,6);
-  }
+  if (!showAllPopular) list = list.slice(0,6);
 
   container.innerHTML = "";
 
   list.forEach(u=>{
     container.innerHTML += `
-      <div class="small-card" data-id="${u.id}">
+      <div class="small-card">
         <div class="avatar"></div>
         <p class="small-name">${u.name.split(" ")[0]}</p>
         <p class="small-rating">⭐ ${u.rating}</p>
       </div>
     `;
-  });
-
-  // clickable
-  document.querySelectorAll(".small-card").forEach(card=>{
-    card.onclick = ()=>{
-      openModal();
-    };
   });
 }
 
@@ -121,7 +120,7 @@ function renderPopular() {
 // SEE ALL
 // ==============================
 function initSeeAll(){
-  const btn = document.querySelector(".see-all");
+  const btn = document.getElementById("seeAllBtn");
 
   btn.onclick = ()=>{
     showAllPopular = !showAllPopular;
@@ -141,21 +140,23 @@ function initLocation(){
 
   box.onclick = (e)=>{
     e.stopPropagation();
-    dropdown.style.display =
-      dropdown.style.display === "block" ? "none" : "block";
+    dropdown.classList.toggle("active");
   };
 
-  document.querySelectorAll("#locationDropdown p").forEach(item=>{
-    item.onclick = ()=>{
-      currentLocation = item.innerText;
-      text.innerText = item.innerText + ", Addis Ababa";
-      dropdown.style.display = "none";
+  document.querySelectorAll(".location-item").forEach(item=>{
+    item.onclick = (e)=>{
+      e.stopPropagation();
+
+      currentLocation = item.dataset.value;
+      text.innerText = item.innerText;
+
+      dropdown.classList.remove("active");
       applyFilters();
     };
   });
 
   document.addEventListener("click", ()=>{
-    dropdown.style.display = "none";
+    dropdown.classList.remove("active");
   });
 }
 
@@ -178,10 +179,12 @@ function initFilters(){
 
 
 // ==============================
-// APPLY FILTERS
+// APPLY FILTERS (FIXED)
 // ==============================
 function applyFilters(){
-  let data = ustazData.filter(u=>u.location===currentLocation);
+  let data = ustazData.filter(u =>
+    u.location.toLowerCase().includes(currentLocation.toLowerCase())
+  );
 
   if(currentFilter==="Male") data = data.filter(u=>u.gender==="male");
   if(currentFilter==="Female") data = data.filter(u=>u.gender==="female");
@@ -252,7 +255,7 @@ function initTheme(){
 
 
 // ==============================
-// 🌍 LANGUAGE (FIXED)
+// LANGUAGE (IMPROVED)
 // ==============================
 function initLanguage(){
   const btn = document.querySelector(".lang-toggle");
@@ -268,5 +271,36 @@ function initLanguage(){
       currentLang==="en"
       ? "Connecting You with Qualified Quran Ustaz Easily."
       : "ተመራጭ የቁርአን አስተማሪዎችን በቀላሉ ያግኙ";
+  };
+}
+
+
+// ==============================
+// SCROLL BUTTONS
+// ==============================
+function initScrollButtons(){
+  document.getElementById("scrollLeft").onclick = ()=>{
+    document.getElementById("popularList")
+      .scrollBy({left:-200,behavior:"smooth"});
+  };
+
+  document.getElementById("scrollRight").onclick = ()=>{
+    document.getElementById("popularList")
+      .scrollBy({left:200,behavior:"smooth"});
+  };
+}
+
+
+// ==============================
+// FIND BUTTON
+// ==============================
+function initFindButton(){
+  const btn = document.getElementById("findBtn");
+
+  if(!btn) return;
+
+  btn.onclick = ()=>{
+    document.getElementById("ustazList")
+      .scrollIntoView({behavior:"smooth"});
   };
 }
