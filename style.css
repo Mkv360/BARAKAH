@@ -3,9 +3,11 @@
   --bg: #0b132b;
   --bg-soft: #1c2541;
   --card: rgba(255,255,255,0.08);
+  --card-strong: rgba(255,255,255,0.12);
   --muted: #9aa4b2;
   --primary: #2ecc71;
   --text: #ffffff;
+  --border: rgba(255,255,255,0.08);
 }
 
 /* ☀️ LIGHT MODE */
@@ -13,18 +15,21 @@ body.light-mode {
   --bg: #f4f6f8;
   --bg-soft: #ffffff;
   --card: rgba(0,0,0,0.05);
+  --card-strong: rgba(0,0,0,0.08);
   --text: #111;
   --muted: #555;
+  --border: rgba(0,0,0,0.08);
 }
 
 /* RESET */
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
   color: var(--text);
   transition: 0.3s;
@@ -36,7 +41,7 @@ body {
   padding: 16px;
   max-width: 420px;
   margin: auto;
-  padding-bottom: 100px;
+  padding-bottom: 110px;
 }
 
 /* 🔝 TOP BAR */
@@ -53,8 +58,35 @@ body {
 }
 
 .location {
-  font-size: 12px;
-  opacity: 0.7;
+  font-size: 13px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+/* DROPDOWN */
+.location-dropdown {
+  position: absolute;
+  top: 60px;
+  left: 16px;
+  background: var(--card-strong);
+  backdrop-filter: blur(15px);
+  border-radius: 12px;
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 100;
+}
+
+.location-dropdown div {
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.location-dropdown div:hover {
+  background: var(--primary);
+  color: black;
 }
 
 .top-icons {
@@ -84,38 +116,40 @@ body {
 }
 
 .hero-title {
-  font-size: 22px;
+  font-size: 24px;
   margin: 10px 0;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .hero-subtitle {
   font-size: 14px;
   color: var(--muted);
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .hero-btn {
   width: 100%;
-  padding: 12px;
-  border-radius: 25px;
+  padding: 13px;
+  border-radius: 30px;
   border: none;
   background: var(--primary);
   color: black;
   font-weight: 600;
   cursor: pointer;
+  font-size: 15px;
 }
 
 /* 🔍 SEARCH */
 .search-bar input {
   width: 100%;
-  padding: 12px;
-  border-radius: 25px;
+  padding: 13px;
+  border-radius: 30px;
   border: none;
   margin: 15px 0;
   background: var(--card);
   color: var(--text);
   outline: none;
+  font-size: 14px;
 }
 
 /* ⚡ FILTERS */
@@ -124,10 +158,15 @@ body {
   gap: 10px;
   overflow-x: auto;
   margin-bottom: 15px;
+  padding-bottom: 5px;
+}
+
+.filters::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-btn {
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 20px;
   border: none;
   background: var(--card);
@@ -135,6 +174,7 @@ body {
   cursor: pointer;
   white-space: nowrap;
   transition: 0.3s;
+  font-size: 13px;
 }
 
 .filter-btn.active {
@@ -144,27 +184,44 @@ body {
 }
 
 /* 🔥 SECTION */
+.section {
+  margin-top: 10px;
+}
+
 .section h3 {
   font-size: 15px;
   margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.section a {
+  font-size: 12px;
+  color: var(--primary);
+  cursor: pointer;
 }
 
 /* HORIZONTAL */
 .horizontal-scroll {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
-  margin-bottom: 20px;
+  padding-bottom: 5px;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 /* SMALL CARDS */
 .small-card {
-  min-width: 90px;
+  min-width: 95px;
   text-align: center;
   background: var(--card);
   padding: 12px;
-  border-radius: 14px;
+  border-radius: 16px;
   backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
 }
 
 .small-name {
@@ -179,14 +236,14 @@ body {
 
 /* AVATAR */
 .avatar {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   background: #ccc;
   border-radius: 50%;
   margin: auto;
 }
 
-/* 🧑‍🏫 USTAZ LIST */
+/* 🧑‍🏫 LIST */
 .ustaz-list {
   display: flex;
   flex-direction: column;
@@ -198,18 +255,18 @@ body {
   display: flex;
   gap: 12px;
   padding: 14px;
-  border-radius: 18px;
+  border-radius: 20px;
   background: var(--card);
   backdrop-filter: blur(14px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  transition: 0.2s;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  border: 1px solid var(--border);
+  transition: 0.25s;
 }
 
 .ustaz-card:hover {
   transform: translateY(-3px);
 }
 
-/* CONTENT */
 .ustaz-info {
   flex: 1;
 }
@@ -255,14 +312,15 @@ body {
 
 button {
   flex: 1;
-  padding: 9px;
+  padding: 10px;
   border-radius: 20px;
   border: none;
   cursor: pointer;
+  font-size: 13px;
 }
 
 button:active {
-  transform: scale(0.96);
+  transform: scale(0.95);
 }
 
 .chat-btn {
@@ -272,7 +330,7 @@ button:active {
 }
 
 .view-btn {
-  background: rgba(255,255,255,0.1);
+  background: var(--card-strong);
   color: var(--text);
 }
 
@@ -283,7 +341,7 @@ button:active {
   display: none;
   align-items: flex-end;
   justify-content: center;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.5);
   z-index: 1000;
 }
 
@@ -296,17 +354,17 @@ button:active {
   text-align: center;
 }
 
-/* 🔻 NAV */
+/* 🔻 NAV (APP STYLE) */
 .bottom-nav {
   position: fixed;
-  bottom: 15px;
+  bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
-  width: 90%;
+  width: 92%;
   max-width: 420px;
   display: flex;
   justify-content: space-around;
-  padding: 12px;
+  padding: 14px;
   border-radius: 30px;
   background: var(--card);
   backdrop-filter: blur(20px);
@@ -315,8 +373,9 @@ button:active {
 
 .nav-item {
   font-size: 20px;
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .nav-item.active {
@@ -328,22 +387,19 @@ button:active {
 /* 📱 TABLET */
 /* ========================= */
 @media (min-width: 600px) {
-
   #mainView {
     max-width: 600px;
   }
 
   .hero-title {
-    font-size: 26px;
+    font-size: 28px;
   }
-
 }
 
 /* ========================= */
 /* 💻 DESKTOP */
 /* ========================= */
 @media (min-width: 900px) {
-
   body {
     display: flex;
     justify-content: center;
@@ -369,14 +425,12 @@ button:active {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
-
 }
 
 /* ========================= */
-/* 🖥️ LARGE SCREENS */
+/* 🖥️ LARGE */
 /* ========================= */
 @media (min-width: 1200px) {
-
   #mainView {
     max-width: 1100px;
   }
@@ -384,5 +438,4 @@ button:active {
   .ustaz-list {
     grid-template-columns: 1fr 1fr 1fr;
   }
-
 }
