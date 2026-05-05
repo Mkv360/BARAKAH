@@ -7,6 +7,74 @@ const ustazData = [
 
 let currentFilter = "All";
 
+// ==============================
+// LANGUAGE DROPDOWN
+// ==============================
+const langToggle = document.getElementById("langToggle");
+const langMenu = document.getElementById("langMenu");
+
+langToggle.addEventListener("click", () => {
+  langMenu.style.display =
+    langMenu.style.display === "block" ? "none" : "block";
+});
+
+// Close when clicking outside
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".lang-wrapper")) {
+    langMenu.style.display = "none";
+  }
+});
+
+// Language select
+document.querySelectorAll(".lang-dropdown p").forEach(item => {
+  item.addEventListener("click", () => {
+    const lang = item.getAttribute("data-lang");
+    console.log("Selected language:", lang);
+
+    // FUTURE: translate UI here
+    langMenu.style.display = "none";
+  });
+});
+
+
+// ==============================
+// THEME TOGGLE (DARK / LIGHT)
+// ==============================
+const themeToggle = document.getElementById("themeToggle");
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("light-mode");
+
+  // Change icon
+  if (document.body.classList.contains("light-mode")) {
+    themeToggle.classList.remove("fa-moon");
+    themeToggle.classList.add("fa-sun");
+  } else {
+    themeToggle.classList.remove("fa-sun");
+    themeToggle.classList.add("fa-moon");
+  }
+
+  // Save preference
+  localStorage.setItem(
+    "theme",
+    document.body.classList.contains("light-mode") ? "light" : "dark"
+  );
+});
+
+
+// ==============================
+// LOAD SAVED THEME
+// ==============================
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+    themeToggle.classList.remove("fa-moon");
+    themeToggle.classList.add("fa-sun");
+  }
+});
+
 // INIT
 document.addEventListener("DOMContentLoaded", () => {
   renderAll();
