@@ -17,16 +17,28 @@
 <div class="container">
 
   <!-- TOP -->
-  <div class="top-bar">
-    <div class="logo">Baraka<span>Link</span></div>
+ <div class="top-bar">
+  <div class="logo">Baraka<span>Link</span></div>
 
-    <div class="auth-buttons">
-      <i class="fa-solid fa-globe"></i>
-      <i class="fa-solid fa-moon"></i>
-      <button class="login">Login</button>
-      <button class="signup">Sign Up</button>
+  <div class="auth-buttons">
+
+    <!-- 🌍 LANGUAGE -->
+    <div class="lang-wrapper">
+      <i class="fa-solid fa-globe" id="langToggle"></i>
+
+      <div class="lang-dropdown" id="langMenu">
+        <p data-lang="en">English</p>
+        <p data-lang="am">Amharic</p>
+      </div>
     </div>
+
+    <!-- 🌙 THEME -->
+    <i class="fa-solid fa-moon" id="themeToggle"></i>
+
+    <button class="login">Login</button>
+    <button class="signup">Sign Up</button>
   </div>
+</div>
 
  <section class="hero">
 
