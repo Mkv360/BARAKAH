@@ -1,6 +1,23 @@
 // ==============================
 // DATA
 // ==============================
+const translations = {
+  en: {
+    hero_title: "Find trusted Quran teachers near you in minutes.",
+    hero_sub: "Connect with verified Ustaz and start learning with ease and confidence.",
+    find_btn: "Find Ustaz Near You →",
+    login: "Login",
+    signup: "Sign Up"
+  },
+  am: {
+    hero_title: "ታመነ የቁርአን አስተማሪዎችን በቀላሉ ያግኙ",
+    hero_sub: "ተረጋጋ እና ቀላል ትምህርት ይጀምሩ",
+    find_btn: "ኡስታዝ ፈልግ →",
+    login: "ግባ",
+    signup: "ተመዝገብ"
+  }
+};
+
 const ustazData = [
   { name: "Ahmed Ali", gender: "male", subjects: ["Tajweed", "Hifz"], rating: 4.9 },
   { name: "Fatima Hassan", gender: "female", subjects: ["Quran"], rating: 4.8 },
@@ -26,35 +43,33 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================
 // LANGUAGE DROPDOWN
 // ==============================
-function initLanguage() {
-  const langToggle = document.getElementById("langToggle");
-  const langMenu = document.getElementById("langMenu");
+document.querySelectorAll(".lang-dropdown p").forEach(item => {
+  item.addEventListener("click", () => {
+    const lang = item.getAttribute("data-lang");
 
-  if (!langToggle || !langMenu) return;
+    changeLanguage(lang);
 
-  langToggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    langMenu.style.display =
-      langMenu.style.display === "block" ? "none" : "block";
+    langMenu.style.display = "none";
   });
+});
 
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".lang-wrapper")) {
-      langMenu.style.display = "none";
+function changeLanguage(lang) {
+  const elements = document.querySelectorAll("[data-i18n]");
+
+  elements.forEach(el => {
+    const key = el.getAttribute("data-i18n");
+
+    if (translations[lang][key]) {
+      el.innerText = translations[lang][key];
     }
   });
 
-  document.querySelectorAll(".lang-dropdown p").forEach(item => {
-    item.addEventListener("click", () => {
-      const lang = item.dataset.lang;
-      console.log("Language:", lang);
-
-      // TODO: add translation logic
-      langMenu.style.display = "none";
-    });
-  });
+  // Save language
+  localStorage.setItem("lang", lang);
 }
 
+const savedLang = localStorage.getItem("lang") || "en";
+changeLanguage(savedLang);
 
 // ==============================
 // THEME SYSTEM
