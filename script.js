@@ -39,38 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAll();
 });
 
-
-// ==============================
-// LANGUAGE DROPDOWN
-// ==============================
-document.querySelectorAll(".lang-dropdown p").forEach(item => {
-  item.addEventListener("click", () => {
-    const lang = item.getAttribute("data-lang");
-
-    changeLanguage(lang);
-
-    langMenu.style.display = "none";
-  });
-});
-
-function changeLanguage(lang) {
-  const elements = document.querySelectorAll("[data-i18n]");
-
-  elements.forEach(el => {
-    const key = el.getAttribute("data-i18n");
-
-    if (translations[lang][key]) {
-      el.innerText = translations[lang][key];
-    }
-  });
-
-  // Save language
-  localStorage.setItem("lang", lang);
-}
-
-const savedLang = localStorage.getItem("lang") || "en";
-changeLanguage(savedLang);
-
 // ==============================
 // THEME SYSTEM
 // ==============================
