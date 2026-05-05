@@ -462,3 +462,82 @@ body.light-mode {
   opacity: 1;
   color: white;
 }
+
+/* =========================
+   LIGHT MODE FIXES
+========================= */
+
+body.light-mode {
+  background: #f9fafb;
+  color: #0f172a;
+}
+
+/* NAVBAR */
+body.light-mode .navbar {
+  background: rgba(255,255,255,0.9);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* NAV LINKS */
+body.light-mode .nav-links {
+  background: rgba(0,0,0,0.05);
+}
+
+body.light-mode .nav-links a {
+  color: #334155;
+}
+
+body.light-mode .nav-links .active {
+  color: #16a34a;
+}
+
+/* ICONS */
+body.light-mode .auth-buttons i {
+  color: #334155;
+  opacity: 0.8;
+}
+
+body.light-mode .auth-buttons i:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+/* LOGIN BUTTON */
+body.light-mode .login {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+/* SIGNUP BUTTON */
+body.light-mode .signup {
+  background: #16a34a;
+  color: white;
+}
+
+/* DROPDOWN MENU */
+body.light-mode .lang-dropdown {
+  background: white;
+  color: #0f172a;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* DROPDOWN ITEMS */
+body.light-mode .lang-dropdown p {
+  color: #0f172a;
+}
+
+body.light-mode .lang-dropdown p:hover {
+  background: #f1f5f9;
+}
+
+/* CARDS */
+body.light-mode .card,
+body.light-mode .feature {
+  background: white;
+  color: #0f172a;
+}
+
+/* TEXT MUTED */
+body.light-mode .section-sub,
+body.light-mode .footer p {
+  color: #64748b;
+}
