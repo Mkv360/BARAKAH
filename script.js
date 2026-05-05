@@ -1,171 +1,186 @@
+// ==============================
+// DATA
+// ==============================
 const ustazData = [
-  {name:"Ahmed Ali", gender:"male", subjects:["Tajweed","Hifz"], rating:4.9},
-  {name:"Fatima Hassan", gender:"female", subjects:["Quran"], rating:4.8},
-  {name:"Musa Ibrahim", gender:"male", subjects:["Tajweed"], rating:4.7},
-  {name:"Aisha Ali", gender:"female", subjects:["Hifz"], rating:4.9}
+  { name: "Ahmed Ali", gender: "male", subjects: ["Tajweed", "Hifz"], rating: 4.9 },
+  { name: "Fatima Hassan", gender: "female", subjects: ["Quran"], rating: 4.8 },
+  { name: "Musa Ibrahim", gender: "male", subjects: ["Tajweed"], rating: 4.7 },
+  { name: "Aisha Ali", gender: "female", subjects: ["Hifz"], rating: 4.9 }
 ];
 
 let currentFilter = "All";
 
+
+// ==============================
+// INIT (SINGLE ENTRY POINT)
+// ==============================
+document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
+  initLanguage();
+  initFilters();
+  initSearch();
+  renderAll();
+});
+
+
 // ==============================
 // LANGUAGE DROPDOWN
 // ==============================
-const langToggle = document.getElementById("langToggle");
-const langMenu = document.getElementById("langMenu");
+function initLanguage() {
+  const langToggle = document.getElementById("langToggle");
+  const langMenu = document.getElementById("langMenu");
 
-langToggle.addEventListener("click", () => {
-  langMenu.style.display =
-    langMenu.style.display === "block" ? "none" : "block";
-});
+  if (!langToggle || !langMenu) return;
 
-// Close when clicking outside
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".lang-wrapper")) {
-    langMenu.style.display = "none";
-  }
-});
-
-// Language select
-document.querySelectorAll(".lang-dropdown p").forEach(item => {
-  item.addEventListener("click", () => {
-    const lang = item.getAttribute("data-lang");
-    console.log("Selected language:", lang);
-
-    // FUTURE: translate UI here
-    langMenu.style.display = "none";
+  langToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    langMenu.style.display =
+      langMenu.style.display === "block" ? "none" : "block";
   });
-});
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".lang-wrapper")) {
+      langMenu.style.display = "none";
+    }
+  });
+
+  document.querySelectorAll(".lang-dropdown p").forEach(item => {
+    item.addEventListener("click", () => {
+      const lang = item.dataset.lang;
+      console.log("Language:", lang);
+
+      // TODO: add translation logic
+      langMenu.style.display = "none";
+    });
+  });
+}
 
 
 // ==============================
-// THEME TOGGLE (DARK / LIGHT)
+// THEME SYSTEM
 // ==============================
-const themeToggle = document.getElementById("themeToggle");
+function initTheme() {
+  const themeToggle = document.getElementById("themeToggle");
+  if (!themeToggle) return;
 
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("light-mode");
-
-  // Change icon
-  if (document.body.classList.contains("light-mode")) {
-    themeToggle.classList.remove("fa-moon");
-    themeToggle.classList.add("fa-sun");
-  } else {
-    themeToggle.classList.remove("fa-sun");
-    themeToggle.classList.add("fa-moon");
-  }
-
-  // Save preference
-  localStorage.setItem(
-    "theme",
-    document.body.classList.contains("light-mode") ? "light" : "dark"
-  );
-});
-
-
-// ==============================
-// LOAD SAVED THEME
-// ==============================
-window.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = localStorage.getItem("theme");
-
-  if (savedTheme === "light") {
+  // load saved
+  const saved = localStorage.getItem("theme");
+  if (saved === "light") {
     document.body.classList.add("light-mode");
-    themeToggle.classList.remove("fa-moon");
-    themeToggle.classList.add("fa-sun");
+    themeToggle.classList.replace("fa-moon", "fa-sun");
   }
-});
 
-// INIT
-document.addEventListener("DOMContentLoaded", () => {
-  renderAll();
-  initFilters();
-  initSearch();
-});
+  themeToggle.addEventListener("click", () => {
+    const isLight = document.body.classList.toggle("light-mode");
 
-// RENDER ALL
+    themeToggle.classList.replace(
+      isLight ? "fa-moon" : "fa-sun",
+      isLight ? "fa-sun" : "fa-moon"
+    );
+
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+  });
+}
+
+
+// ==============================
+// RENDER
+// ==============================
 function renderAll() {
   renderPopular();
   renderList(ustazData);
 }
 
+
+// ==============================
 // POPULAR
+// ==============================
 function renderPopular() {
   const container = document.getElementById("popularList");
-  container.innerHTML = "";
+  if (!container) return;
 
-  ustazData.forEach(u => {
-    container.innerHTML += `
-      <div class="small-card">
-        <div class="avatar"></div>
-        <div class="small-name">${u.name.split(" ")[0]}</div>
-        <div class="small-rating">⭐ ${u.rating}</div>
-      </div>
-    `;
-  });
+  container.innerHTML = ustazData.map(u => `
+    <div class="small-card">
+      <div class="avatar"></div>
+      <div class="small-name">${u.name.split(" ")[0]}</div>
+      <div class="small-rating">⭐ ${u.rating}</div>
+    </div>
+  `).join("");
 }
 
+
+// ==============================
 // LIST
+// ==============================
 function renderList(data) {
   const container = document.getElementById("ustazList");
-  container.innerHTML = "";
+  if (!container) return;
 
-  data.forEach(u => {
-    container.innerHTML += `
-      <div class="card">
-        <div class="avatar"></div>
-        <div class="info">
-          <div class="top">
-            <div class="name">${u.name}</div>
-            <div>⭐ ${u.rating}</div>
-          </div>
+  container.innerHTML = data.map(u => `
+    <div class="card">
+      <div class="avatar"></div>
 
-          <div class="sub">${u.subjects.join(" • ")}</div>
+      <div class="info">
+        <div class="top">
+          <div class="name">${u.name}</div>
+          <div>⭐ ${u.rating}</div>
+        </div>
 
-          <div class="actions">
-            <button class="btn chat">Chat</button>
-            <button class="btn view">View</button>
-          </div>
+        <div class="sub">${u.subjects.join(" • ")}</div>
+
+        <div class="actions">
+          <button class="btn chat">Chat</button>
+          <button class="btn view">View</button>
         </div>
       </div>
-    `;
-  });
+    </div>
+  `).join("");
 }
 
+
+// ==============================
 // FILTERS
+// ==============================
 function initFilters() {
-  document.querySelectorAll(".filter").forEach(btn => {
-    btn.onclick = () => {
-      document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+  const buttons = document.querySelectorAll(".filter");
+  if (!buttons.length) return;
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      buttons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
       currentFilter = btn.innerText;
 
       let filtered = ustazData;
 
-      if (currentFilter === "Male") {
-        filtered = ustazData.filter(u => u.gender === "male");
-      }
-
-      if (currentFilter === "Female") {
-        filtered = ustazData.filter(u => u.gender === "female");
-      }
-
-      if (currentFilter === "Hifz") {
-        filtered = ustazData.filter(u => u.subjects.includes("Hifz"));
-      }
-
-      if (currentFilter === "Tajweed") {
-        filtered = ustazData.filter(u => u.subjects.includes("Tajweed"));
+      switch (currentFilter) {
+        case "Male":
+          filtered = ustazData.filter(u => u.gender === "male");
+          break;
+        case "Female":
+          filtered = ustazData.filter(u => u.gender === "female");
+          break;
+        case "Hifz":
+          filtered = ustazData.filter(u => u.subjects.includes("Hifz"));
+          break;
+        case "Tajweed":
+          filtered = ustazData.filter(u => u.subjects.includes("Tajweed"));
+          break;
       }
 
       renderList(filtered);
-    };
+    });
   });
 }
 
+
+// ==============================
 // SEARCH
+// ==============================
 function initSearch() {
   const input = document.getElementById("searchInput");
+  if (!input) return;
 
   input.addEventListener("input", () => {
     const val = input.value.toLowerCase();
