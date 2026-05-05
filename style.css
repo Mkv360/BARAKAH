@@ -38,19 +38,49 @@ body {
 }
 
 /* AUTH */
+/* AUTH */
 .auth-buttons {
   display: flex;
-  gap: 8px;
+  align-items: center;   /* vertical alignment */
+  gap: 10px;             /* consistent spacing */
 }
 
+/* ICONS */
+.auth-buttons i {
+  font-size: 15px;
+  opacity: 0.7;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+
+  transition: all 0.2s ease;
+}
+
+/* ICON HOVER */
+.auth-buttons i:hover {
+  background: rgba(255,255,255,0.08);
+  opacity: 1;
+}
+
+/* BUTTONS */
 .auth-buttons button {
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 7px 14px;
+  border-radius: 999px;
   border: none;
   font-size: 12px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
+.auth-buttons i:last-of-type {
+  margin-right: 6px;
+}
 .login {
   background: transparent;
   border: 1px solid rgba(255,255,255,0.2);
