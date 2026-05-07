@@ -11,7 +11,7 @@ const ustazData = [
 // ==============================
 // BACKEND URL
 // ==============================
-const BASE_URL = "https://ustaz-backend--hmdclent.replit.app/api";
+const BASE_URL = "https://ustaz-backend--.app/api";
 
 let currentFilter = "All";
 
