@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BarakaLink - Welcome</title>
+
+  <link rel="stylesheet" href="welcome.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body id="welcomePage">
+
+<!-- 🔥 MOBILE CONTAINER WRAP -->
+<div class="container">
+
+<!-- ================= TOP BAR ================= -->
+<div class="topbar">
+  <!-- MENU ICON (RIGHT) -->
+  <div class="menu-icon" onclick="openSideMenu()">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <!-- CENTER LOGO -->
+  <div class="logo">
+    Baraka<span>Link</span>
+  </div>
+
+  <!-- PROFILE ICON (LEFT) -->
+  <div class="profile-icon">
+    <i class="fa-solid fa-user"></i>
+  </div>
+
+  
+
+  
+</div>
+
+<!-- ================= SIDE MENU ================= -->
+<div id="sideMenu" class="side-menu">
+
+  <div class="side-header">
+    <h3>BarakaLink</h3>
+    <i class="fa-solid fa-xmark" onclick="closeSideMenu()"></i>
+  </div>
+
+  <a href="#home"><i class="fa-solid fa-house"></i> Home</a>
+  <a href="#about"><i class="fa-solid fa-circle-info"></i> About</a>
+  <a href="#contact"><i class="fa-solid fa-envelope"></i> Contact</a>
+  <a href="#support"><i class="fa-solid fa-headset"></i> Support</a>
+
+  <button class="logout-btn" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i> Logout
+  </button>
+
+</div>
+
+<!-- OVERLAY -->
+<div id="overlay" onclick="closeSideMenu()"></div>
+
+<!-- ================= HERO WELCOME ================= -->
+<section class="welcome">
+
+  <h1>Welcome Back 👋</h1>
+
+  <p>
+    Continue your Quran learning journey with trusted Ustaz near you.
+  </p>
+
+  <div class="quick-actions">
+
+    <div class="action-card">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <h3>Find Ustaz</h3>
+      <p>Nearby teachers</p>
+    </div>
+
+    <div class="action-card">
+      <i class="fa-solid fa-book-open"></i>
+      <h3>My Lessons</h3>
+      <p>Continue learning</p>
+    </div>
+
+    <div class="action-card">
+      <i class="fa-solid fa-star"></i>
+      <h3>Saved</h3>
+      <p>Favorite Ustaz</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= SECTION ================= -->
+<section class="section">
+
+  <div class="section-header">
+    <h2>🔥 Recommended for You</h2>
+    <span>See all</span>
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-avatar"></div>
+      <div class="card-info">
+        <h3>Ustaz Ahmed Ali</h3>
+        <p>Tajweed • 4.9 ⭐</p>
+      </div>
+      <button>View</button>
+    </div>
+
+    <div class="card">
+      <div class="card-avatar"></div>
+      <div class="card-info">
+        <h3>Ustaza Fatima</h3>
+        <p>Quran • 4.8 ⭐</p>
+      </div>
+      <button>View</button>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= BOTTOM NAV ================= -->
+<div class="nav">
+  <a class="active" href="#">Home</a>
+  <a href="#">Search</a>
+  <a href="#">Lessons</a>
+  <a href="#">Profile</a>
+</div>
+
+</div> <!-- ✅ END CONTAINER -->
+
+<script src="script.js"></script>
+</body>
+</html>
