@@ -1,3 +1,9 @@
+document.addEventListener("DOMContentLoaded", () => {
+  if (!document.getElementById("findUstazBtn")) return;
+
+  // ONLY run homepage code here
+});
+
 // ==============================
 // DATA
 // ==============================
@@ -11,7 +17,7 @@ const ustazData = [
 // ==============================
 // BACKEND URL
 // ==============================
-const BASE_URL = "https://ustaz-backend--.app/api";
+const BASE_URL = "http://localhost/BarakaLink/backend";
 
 let currentFilter = "All";
 
@@ -26,32 +32,50 @@ function handleRoleChange(role) {
   }
 }
 
+
+
+
 // ==============================
-// INIT (SINGLE ENTRY POINT)
+// INIT (INDEX PAGE ONLY)
 // ==============================
 document.addEventListener("DOMContentLoaded", () => {
+
+  // =========================
+  // AUTH CHECK (REDIRECT)
+  // =========================
+  if (localStorage.getItem("loggedIn") === "true") {
+    window.location.href = "welcome.html";
+    return;
+  }
+
+  // If index elements don't exist → stop
+  if (!document.getElementById("findUstazBtn")) return;
+
+  // =========================
+  // INIT HOMEPAGE
+  // =========================
   initTheme();
   initLanguage();
   initFilters();
   initSearch();
   renderAll();
 
-  
-  // ==============================
-// SEE ALL POPULAR
-// ==============================
-const seeAllBtn = document.querySelector(".see-all");
+  // =========================
+  // SEE ALL POPULAR
+  // =========================
+  const seeAllBtn = document.querySelector(".see-all");
 
-if (seeAllBtn) {
-  seeAllBtn.addEventListener("click", () => {
-    document.getElementById("ustazList").scrollIntoView({
-      behavior: "smooth"
+  if (seeAllBtn) {
+    seeAllBtn.addEventListener("click", () => {
+      document.getElementById("ustazList").scrollIntoView({
+        behavior: "smooth"
+      });
     });
-  });
-}
-  // ===============================
+  }
+
+  // =========================
   // CUSTOM ROLE SELECT
-  // ===============================
+  // =========================
   const roleSelectBox = document.querySelector("#roleSelect .select-box");
   const roleDropdown = document.querySelector("#roleSelect .dropdown");
   const roleText = document.getElementById("roleText");
@@ -68,33 +92,36 @@ if (seeAllBtn) {
         window.selectedRole = opt.dataset.value;
         roleText.innerText = opt.innerText;
 
-        handleRoleChange(window.selectedRole); // ✅ THIS IS THE FIX
+        handleRoleChange(window.selectedRole);
         roleDropdown.classList.add("hidden");
       });
     });
 
-    // close on outside click
     document.addEventListener("click", (e) => {
       if (!e.target.closest("#roleSelect")) {
         roleDropdown.classList.add("hidden");
       }
     });
   }
-});
 
-// ==============================
-// FIND USTAZ NEAR YOU
-// ==============================
-document.getElementById("findUstazBtn").addEventListener("click", () => {
-  document.getElementById("popularSection").scrollIntoView({
-    behavior: "smooth"
-  });
-});
+  // =========================
+  // FIND USTAZ BUTTON
+  // =========================
+  const findBtn = document.getElementById("findUstazBtn");
 
-// ==============================
-// LANGUAGE DROPDOWN
-// ==============================
-function initLanguage() {
+  if (findBtn) {
+    findBtn.addEventListener("click", () => {
+      document.getElementById("popularSection").scrollIntoView({
+        behavior: "smooth"
+      });
+    });
+  }
+
+});
+  // ==============================
+  // LANGUAGE DROPDOWN
+ // ==============================
+ function initLanguage() {
   const langToggle = document.getElementById("langToggle");
   const langMenu = document.getElementById("langMenu");
 
@@ -119,12 +146,12 @@ function initLanguage() {
       langMenu.style.display = "none";
     });
   });
-}
+ }
 
-// ==============================
-// THEME SYSTEM
-// ==============================
-function initTheme() {
+ // ==============================
+ // THEME SYSTEM
+ // ==============================
+ function initTheme() {
   const themeToggle = document.getElementById("themeToggle");
   if (!themeToggle) return;
 
@@ -145,14 +172,14 @@ function initTheme() {
 
     localStorage.setItem("theme", isLight ? "light" : "dark");
   });
-}
+ }
 
-// ==============================
-// RENDER
-// ==============================
-let pendingAction = null;
+ // ==============================
+  // RENDER
+ // ==============================
+ let pendingAction = null;
 
-function requireAuth(action) {
+ function requireAuth(action) {
   const isLoggedIn = false;
 
   if (!isLoggedIn) {
@@ -163,17 +190,17 @@ function requireAuth(action) {
   }
 
   action();
-}
+ }
 
-function renderAll() {
+ function renderAll() {
   renderPopular();
   renderList(ustazData);
-}
+ }
 
-// ==============================
-// POPULAR
-// ==============================
-function renderPopular() {
+  // ==============================
+  // POPULAR
+ // ==============================
+ function renderPopular() {
   const container = document.getElementById("popularList");
   if (!container) return;
 
@@ -184,12 +211,12 @@ function renderPopular() {
       <div class="small-rating">⭐ ${u.rating}</div>
     </div>`
   ).join("");
-}
+ }
 
-// ==============================
-// LIST
-// ==============================
-function renderList(data) {
+  // ==============================
+  // LIST
+  // ==============================
+  function renderList(data) {
   const container = document.getElementById("ustazList");
   if (!container) return;
 
@@ -213,12 +240,12 @@ function renderList(data) {
       </div>
     </div>`
   ).join("");
-}
+ }
 
-// ==============================
-// FILTERS
-// ==============================
-function initFilters() {
+  // ==============================
+ // FILTERS
+ // ==============================
+ function initFilters() {
   const buttons = document.querySelectorAll(".filter");
   if (!buttons.length) return;
 
@@ -249,12 +276,12 @@ function initFilters() {
       renderList(filtered);
     });
   });
-}
+ }
 
-// ==============================
-// SEARCH
-// ==============================
-function initSearch() {
+  // ==============================
+  // SEARCH
+  // ==============================
+  function initSearch() {
   const input = document.getElementById("searchInput");
   if (!input) return;
 
@@ -268,71 +295,71 @@ function initSearch() {
 
     renderList(filtered);
   });
-}
+  }
 
-function openPopularProfile(name) {
+ function openPopularProfile(name) {
   requireAuth(() => {
     openProfile(name);
   });
-}
+ }
 
-// ===============================
-// ELEMENTS
-// ===============================
-const overlay = document.getElementById("authOverlay");
-const loginBtn = document.querySelector(".login");
-const signupBtn = document.querySelector(".signup");
-const loginForm = document.getElementById("loginForm");
-const signupForm = document.getElementById("signupForm");
-const closeAuth = document.getElementById("closeAuth");
+  // ===============================
+ // ELEMENTS
+ // ===============================
+ const overlay = document.getElementById("authOverlay");
+ const loginBtn = document.querySelector(".login");
+ const signupBtn = document.querySelector(".signup");
+ const loginForm = document.getElementById("loginForm");
+ const signupForm = document.getElementById("signupForm");
+ const closeAuth = document.getElementById("closeAuth");
 
-const goSignup = document.getElementById("goSignup");
-const goLogin = document.getElementById("goLogin");
+ const goSignup = document.getElementById("goSignup");
+ const goLogin = document.getElementById("goLogin");
 
-// ===============================
-// OPEN MODAL
-// ===============================
-loginBtn.onclick = () => {
+ // ===============================
+ // OPEN MODAL
+ // ===============================
+ loginBtn.onclick = () => {
   overlay.style.display = "flex";
   showLogin();
-};
+ };
 
-signupBtn.onclick = () => {
+ signupBtn.onclick = () => {
   overlay.style.display = "flex";
   showSignup();
-};
+ };
 
-// ===============================
-// CLOSE MODAL
-// ===============================
-closeAuth.onclick = () => overlay.style.display = "none";
+ // ===============================
+ // CLOSE MODAL
+ // ===============================
+ closeAuth.onclick = () => overlay.style.display = "none";
 
-overlay.onclick = (e) => {
+ overlay.onclick = (e) => {
   if (e.target === overlay) overlay.style.display = "none";
-};
+ };
 
-// ===============================
-// SWITCH FORMS
-// ===============================
-function showLogin() {
+  // ===============================
+  // SWITCH FORMS
+ // ===============================
+ function showLogin() {
   loginForm.classList.remove("hidden");
   signupForm.classList.add("hidden");
   document.getElementById("authTitle").innerText = "Welcome Back";
-}
+ }
 
-function showSignup() {
+ function showSignup() {
   signupForm.classList.remove("hidden");
   loginForm.classList.add("hidden");
   document.getElementById("authTitle").innerText = "Create Account";
-}
+ }
 
-if (goSignup) goSignup.onclick = showSignup;
-if (goLogin) goLogin.onclick = showLogin;
+ if (goSignup) goSignup.onclick = showSignup;
+ if (goLogin) goLogin.onclick = showLogin;
 
-// ===============================
-// PASSWORD TOGGLE 👁
-// ===============================
-document.querySelectorAll(".toggle-password").forEach(icon => {
+  // ===============================
+  // PASSWORD TOGGLE 👁
+  // ===============================
+ document.querySelectorAll(".toggle-password").forEach(icon => {
   icon.addEventListener("click", () => {
     const input = icon.previousElementSibling;
 
@@ -346,24 +373,24 @@ document.querySelectorAll(".toggle-password").forEach(icon => {
       icon.classList.add("fa-eye");
     }
   });
-});
+ });
 
-// ===============================
-// ETHIOPIAN PHONE VALIDATION 🇪🇹
-// ===============================
-function validatePhone(phone) {
+ // ===============================
+ // ETHIOPIAN PHONE VALIDATION 🇪🇹
+ // ===============================
+ function validatePhone(phone) {
   const p = phone.replace(/\s+/g, "");
 
   if (/^9\d{8}$/.test(p)) return "+251" + p;
   if (/^0[79]\d{8}$/.test(p)) return "+251" + p.slice(1);
 
   return null;
-}
-
+ }
+ 
+ // ===============================
+// LOGIN
 // ===============================
-// LOGIN (DEMO)
-// ===============================
-function login() {
+ function login() {
   const phoneInput = document.getElementById("loginPhone").value;
   const pass = document.getElementById("loginPassword").value;
 
@@ -375,9 +402,16 @@ function login() {
   }
 
   console.log("LOGIN:", phone, pass);
-  alert("Login successful (demo)");
-}
 
+  // ✅ SAVE LOGIN STATE
+  localStorage.setItem("loggedIn", "true");
+  localStorage.setItem("userPhone", phone);
+
+  alert("Login successful");
+
+  // ✅ REDIRECT TO DASHBOARD
+  window.location.href = "welcome.html";
+}
 // ===============================
 // SIGNUP (UPDATED)
 // ===============================
@@ -401,124 +435,239 @@ function signup() {
 
   const phone = validatePhone(phoneInput);
 
-  // ✅ check passwords match
   if (pass !== confirmPass) {
     alert("Passwords do not match");
     return;
   }
 
-  // 🔴 BASIC VALIDATION
   if (!role || !name || !phone || !subcityVal || !areaVal || !pass || !confirmPass) {
     alert("Please fill all required fields");
     return;
   }
 
-  // ===============================
-  // ✅ PARENT
-  // ===============================
-  if (role === "parent") {
-    console.log("PARENT SIGNUP:", {
-      role,
-      name,
-      phone,
-      subcity: subcityVal,
-      area: areaVal,
-      pass
-    });
+  let exp = null;
+  let gender = null;
 
-    alert("Parent signup successful (demo)");
-    return;
-  }
-
-  // ===============================
-  // ✅ USTAZ
-  // ===============================
   if (role === "ustaz") {
-    const exp = document.getElementById("experience").value;
-    const gender = document.getElementById("gender").value;
+    exp = document.getElementById("experience").value;
+    gender = document.getElementById("gender").value;
 
     if (!exp || !gender) {
       alert("Fill experience and gender");
       return;
     }
+  }
 
-    console.log("USTAZ SIGNUP:", {
+  console.log("SIGNUP DATA READY:", {
+    role,
+    name,
+    phone,
+    subcity: subcityVal,
+    area: areaVal,
+    password: pass,
+    experience: exp,
+    gender: gender
+  });
+
+  // ===============================
+  // SEND OTP (CORRECT PLACE)
+  // ===============================
+  fetch(BASE_URL + "/send_otp.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
       role,
       name,
       phone,
       subcity: subcityVal,
       area: areaVal,
+      password: pass,
       experience: exp,
-      gender,
-      pass
-    });
+      gender: gender
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
 
-    alert("Ustaz signup successful (demo)");
+    console.log("OTP RESPONSE:", data);
+
+if (data.success) {
+
+  alert("OTP sent!");
+
+  // hide signup form
+  document.getElementById("signupForm").classList.add("hidden");
+
+  // hide auth modal close icon
+  document.getElementById("closeAuth").style.display = "none";
+
+  // hide auth title
+  document.getElementById("authTitle").style.display = "none";
+
+  // show OTP popup
+  document.getElementById("otpSection").classList.remove("hidden");
+    } else {
+      alert(data.message || "OTP failed");
+    }
+
+  })
+  .catch(err => console.error(err));
+}
+// ===============================
+// VERIFY OTP
+// ===============================
+function verifyOTP() {
+
+  const otp = document.getElementById("otpInput").value.trim();
+
+  if (!otp) {
+    alert("Enter OTP");
+    return;
   }
+
+  fetch(BASE_URL + "/verify_otp.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ otp })
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    console.log("VERIFY RESPONSE:", data);
+
+    if (data.success) {
+
+     alert("OTP Verified!");
+
+     // IMPORTANT: pass user state if needed
+     window.location.href = "welcome.html";
+
+    } else {
+      alert(data.message || "Invalid OTP");
+    }
+
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Server error");
+  });
 }
 
-// ===============================
-// SUBCITY → AREA
-// ===============================
-const areas = {
-  bole: ["Gerji", "CMC"],
-  yeka: ["Megenagna"],
-  kirkos: ["Kazanchis"]
-};
+// CLOSE OTP BOX
+function closeOTP() {
 
-const subcity = document.getElementById("subcity");
-const area = document.getElementById("area");
+  document.getElementById("otpSection").classList.add("hidden");
 
-if (subcity) {
+  document.getElementById("signupForm").classList.remove("hidden");
+
+  document.getElementById("closeAuth").style.display = "block";
+
+  document.getElementById("authTitle").style.display = "block";
+}
+// RESEND OTP
+function resendOTP() {
+  console.log("Resending OTP...");
+
+  // reuse signup phone
+  const phoneInput = document.getElementById("signupPhone").value;
+  const phone = validatePhone(phoneInput);
+
+  fetch(BASE_URL + "/send_otp.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ phone })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("RESEND OTP:", data);
+    alert("OTP resent successfully!");
+  })
+  .catch(err => {
+    console.error(err);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  // 🔥 ONLY RUN HOMEPAGE CODE IF HOME ELEMENT EXISTS
+  if (!document.getElementById("signupForm")) return;
+
+  // homepage logic here...
+});
+// ===============================
+// SUBCITY → AREA (FIXED)
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+
+  const areas = {
+    bole: ["Gerji", "CMC"],
+    yeka: ["Megenagna"],
+    kirkos: ["Kazanchis"]
+  };
+
+  const subcity = document.getElementById("subcity");
+  const area = document.getElementById("area");
+
+  if (!subcity || !area) return;
+
   subcity.addEventListener("change", () => {
+
     area.innerHTML = `<option value="">Select Area</option>`;
 
-    if (!areas[subcity.value]) return;
+    const selected = subcity.value;
 
-    areas[subcity.value].forEach(a => {
+    if (!areas[selected]) return;
+
+    areas[selected].forEach(a => {
       const opt = document.createElement("option");
       opt.value = a;
       opt.textContent = a;
       area.appendChild(opt);
     });
+
   });
-}
-// ===============================
-// SECONDARY BUTTON HERE → SERVICE SECTION
-// ===============================
-document.getElementById("viewFieldsBtn").onclick = () => {
+
+});
+ // ===============================
+ // SECONDARY BUTTON HERE → SERVICE SECTION
+ // ===============================
+ document.getElementById("viewFieldsBtn").onclick = () => {
   document.getElementById("services").scrollIntoView({
     behavior: "smooth"
   });
-};
+ };
 
-// ===============================
-// NAV ACTIVE LINK
-// ===============================
-// ===============================
-// NAV ACTIVE LINK (FIXED)
-// ===============================
-const navLinks = document.querySelectorAll(".nav a");
+ 
+ // ===============================
+ // NAV ACTIVE LINK (FIXED)
+ // ===============================
+ const navLinks = document.querySelectorAll(".nav a");
 
-function setActive(id) {
+ function setActive(id) {
   navLinks.forEach(link => {
     link.classList.remove("active");
     if (link.getAttribute("href") === "#" + id) {
       link.classList.add("active");
     }
   });
-}
+ }
 
-// Click behavior (IMPORTANT FIX)
-navLinks.forEach(link => {
+ // Click behavior (IMPORTANT FIX)
+ navLinks.forEach(link => {
   link.addEventListener("click", () => {
     const id = link.getAttribute("href").replace("#", "");
     setActive(id);
   });
-});
+ });
 
-// Scroll behavior (stable version)
-window.addEventListener("scroll", () => {
+  // Scroll behavior (stable version)
+ window.addEventListener("scroll", () => {
   const sections = document.querySelectorAll("section[id]");
 
   let current = "home";
@@ -532,11 +681,11 @@ window.addEventListener("scroll", () => {
   });
 
   setActive(current);
-});
-// ==============================
-// BLOG PROTECTION (LOGIN REQUIRED)
-// ==============================
-document.querySelectorAll("#blog .card-link").forEach(card => {
+ });
+  // ==============================
+  // BLOG PROTECTION (LOGIN REQUIRED)
+  // ==============================
+ document.querySelectorAll("#blog .card-link").forEach(card => {
   card.addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -545,12 +694,12 @@ document.querySelectorAll("#blog .card-link").forEach(card => {
       console.log("Opening blog article...");
     });
   });
-});
+ });
 
-// ==============================
-// POPULAR HORIZONTAL SCROLL
-// ==============================
-function scrollPopular(direction) {
+  // ==============================
+  // POPULAR HORIZONTAL SCROLL
+ // ==============================
+ function scrollPopular(direction) {
   const container = document.getElementById("popularList");
 
   if (!container) return;
@@ -559,4 +708,44 @@ function scrollPopular(direction) {
     left: direction * 200,
     behavior: "smooth"
   });
+ }  
+
+ function testOTP() {
+  fetch("http://localhost/BarakaLink/backend/send_otp.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      phone: "912345678"
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("TEST RESULT:", data);
+  });
+}
+
+// =========================
+// SIDE MENU
+// =========================
+
+function openSideMenu() {
+  document.getElementById("sideMenu").classList.add("show");
+  document.getElementById("overlay").classList.add("show");
+}
+
+function closeSideMenu() {
+  document.getElementById("sideMenu").classList.remove("show");
+  document.getElementById("overlay").classList.remove("show");
+}
+function logout() {
+  // clear login/session data (if you use it later)
+  localStorage.clear();
+
+  // optional: show message
+  alert("Logged out successfully");
+
+  // redirect to login page
+  window.location.href = "index.html"; // change if your login page is different
 }
