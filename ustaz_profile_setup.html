@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ustaz Profile Setup - BarakaLink</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="welcome.css">
+</head>
+
+<body class="setup-page">
+
+<!-- ================= SIDE MENU ================= -->
+<div class="side-menu" id="sideMenu">
+
+  <div class="side-header">
+    <h3>BarakaLink</h3>
+    <i class="fa-solid fa-xmark" onclick="toggleMenu()"></i>
+  </div>
+
+  <a href="welcome.html"><i class="fa-solid fa-house"></i> Home</a>
+  <a href="#"><i class="fa-solid fa-user"></i> Profile</a>
+  <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<div id="overlay" onclick="toggleMenu()"></div>
+
+<!-- ================= MAIN CONTAINER ================= -->
+<div class="container">
+
+  <!-- ================= TOP BAR ================= -->
+  <div class="topbar center-logo">
+
+    <div class="menu-icon" id="menuIcon" onclick="toggleMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <div class="logo">
+      Baraka<span>Link</span>
+    </div>
+
+    <div class="profile-icon" id="profileIcon">
+      <i class="fa-solid fa-user"></i>
+    </div>
+
+  </div>
+
+  <!-- ================= TITLE ================= -->
+  <div class="setup-title">
+    <h2>Complete Your Ustaz Profile</h2>
+    <p>Help parents understand your skills and experience</p>
+  </div>
+
+  <!-- ================= FORM ================= -->
+  <div class="form-box">
+
+    <label>Profile Photo</label>
+    <input type="file" id="photo">
+
+    <label>Bio</label>
+    <textarea id="bio" placeholder="Tell us about yourself"></textarea>
+
+    <div class="form-section">
+      <h3>Study Fields</h3>
+
+      <div class="checkbox-group">
+        <label><input type="checkbox"> Quran Basic</label>
+        <label><input type="checkbox"> Tajweed</label>
+        <label><input type="checkbox"> Hifz</label>
+        <label><input type="checkbox"> Tafseer</label>
+        <label><input type="checkbox"> Hadith</label>
+        <label><input type="checkbox"> Tarbiyah</label>
+      </div>
+    </div>
+
+    <label>Qualification</label>
+    <input type="file" id="cert">
+
+    <label>Recitation Sample</label>
+    <input type="file" id="audio">
+
+    <label>Languages Spoken</label>
+    <input type="text" placeholder="e.g. Arabic, Amharic, English">
+
+    <button onclick="completeProfile()">Complete Profile</button>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
