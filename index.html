@@ -14,7 +14,7 @@
 
 <body>
 
-<div class="container" id="home">
+<div class="container" id="landingPage">
 
   <!-- TOP -->
  <div class="top-bar">
@@ -96,7 +96,7 @@
   </div>
 
   <!-- POPULAR -->
-<div class="section" id="popularSection">
+ <div class="section" id="popularSection">
 
   <div class="section-header">
     <h3>Popular Near You</h3>
@@ -111,7 +111,7 @@
     <button class="scroll-btn right" onclick="scrollPopular(1)">›</button>
   </div>
 
-</div>
+ </div>
   <!-- LIST -->
   <div class="section">
     <h3>All Ustaz</h3>
@@ -233,7 +233,7 @@
 
   </div>
 
-</section>
+ </section>
 
  <section id="about" class="section">
 
@@ -316,8 +316,8 @@
   </div>
    <!-- =========================
    SOCIAL MEDIA
-========================= -->
-<div class="social-box">
+  ========================= -->
+ <div class="social-box">
 
   <h3 class="section-subtitle" style="margin-top:20px;">
     Follow Us
@@ -370,7 +370,7 @@
   </button>
 
 </div>
-<footer class="footer">
+ <footer class="footer">
 
   <div class="footer-box">
 
@@ -402,7 +402,7 @@
 
   </div>
 
-</footer>
+ </footer>
   </section>
 
 </div>
@@ -505,7 +505,7 @@
       <!-- USTAZ EXTRA -->
      <!-- GENDER (CUSTOM SELECT LIKE ROLE) -->
 
-<div id="ustazFields" class="hidden">
+    <div id="ustazFields" class="hidden">
 
   <input type="number" id="experience" placeholder="Years of Experience">
 
@@ -517,7 +517,7 @@
     <option value="female">Female</option>
   </select>
 
-</div>
+ </div>
       <!-- PASSWORD -->
       <div class="password-group">
         <input type="password" id="signupPassword" placeholder="Password">
@@ -530,20 +530,49 @@
        <i class="fa-solid fa-eye toggle-password"></i>
     </div>
 
-      <button onclick="signup()">Create Account</button>
+      <button type="button" onclick="signup()">Create Account</button>
 
       <p class="switch">
         Already have an account?
         <span onclick="showLogin()">Login</span>
       </p>
-    </div>
+       
+   </div>
+<!-- OTP SECTION -->
+<!-- OTP SECTION -->
+<div id="otpSection" class="hidden">
 
+  <!-- CLOSE ICON -->
+  <div class="otp-close" onclick="closeOTP()">
+    <i class="fa-solid fa-xmark"></i>
   </div>
+
+  <h3>Verify OTP</h3>
+
+  <p>
+    Enter the 6-digit code sent to your phone
+  </p>
+
+  <input
+    type="text"
+    id="otpInput"
+    placeholder="6-digit OTP"
+  >
+
+  <!-- VERIFY BUTTON -->
+  <button type="button" onclick="verifyOTP()">
+    Verify OTP
+  </button>
+
+  <!-- RESEND LINK -->
+  <p class="resend-text">
+    Didn't receive code?
+    <span onclick="resendOTP()">Resend OTP</span>
+  </p>
+
 </div>
 
-
-
-<!-- JS -->
+  <!-- JS -->
 <script src="script.js"></script>
 
 </body>
