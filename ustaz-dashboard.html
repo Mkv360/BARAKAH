@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ustaz Dashboard - BarakaLink</title>
+
+  <link rel="stylesheet" href="welcome.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+
+<body>
+
+<!-- APP FRAME -->
+<div class="container">
+
+  <!-- ================= SIDE MENU (INSIDE CONTAINER) ================= -->
+  <div class="side-menu" id="sideMenu">
+
+    <div class="menu-profile">
+      <div class="menu-avatar">
+        <img src="https://via.placeholder.com/60" id="menuAvatar">
+      </div>
+
+      <div class="menu-user-info">
+        <h4 id="menuName">Ustaz Name</h4>
+        <p>Verified Ustaz</p>
+      </div>
+    </div>
+
+    <hr class="menu-divider">
+
+    <a href="welcome.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="#"><i class="fa-solid fa-user"></i> Profile</a>
+    <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+
+  </div>
+
+  <!-- OVERLAY (INSIDE CONTAINER) -->
+  <div id="overlay" onclick="toggleMenu()"></div>
+
+  <!-- ================= TOPBAR ================= -->
+  <div class="topbar center-logo">
+
+    <div class="menu-icon" onclick="toggleMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <div class="logo">
+      Baraka<span>Link</span>
+    </div>
+
+    <div class="profile-icon">
+      <i class="fa-solid fa-user"></i>
+    </div>
+
+  </div>
+
+  <!-- ================= PROFILE CARD ================= -->
+  <div class="profile-card">
+
+    <div class="profile-header">
+      <div class="profile-img">
+        <img id="ustazPhoto" src="https://via.placeholder.com/80">
+      </div>
+
+      <div class="profile-info">
+        <h3 id="ustazName">Ustaz Name</h3>
+        <p id="ustazRole">Ustaz • Pending Verification</p>
+      </div>
+    </div>
+
+    <p class="bio" id="ustazBio">Bio will appear here...</p>
+
+    <div class="tags" id="ustazSubjects"></div>
+
+  </div>
+
+  <!-- ================= STATS ================= -->
+  <div class="stats">
+
+    <div class="stat">
+      <h4>0</h4>
+      <p>Students</p>
+    </div>
+
+    <div class="stat">
+      <h4>0</h4>
+      <p>Sessions</p>
+    </div>
+
+    <div class="stat">
+      <h4>⭐ 0.0</h4>
+      <p>Rating</p>
+    </div>
+
+  </div>
+
+</div>
+<!-- ================= SCRIPTS ================= -->
+<script src="script.js"></script>
+</body>
+
+
+
+</html>
