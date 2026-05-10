@@ -8,12 +8,30 @@ document.addEventListener("DOMContentLoaded", () => {
 // DATA
 // ==============================
 const ustazData = [
+  // 👨 MALE (10)
   { name: "Ahmed Ali", gender: "male", subjects: ["Tajweed", "Hifz"], rating: 4.9 },
-  { name: "Fatima Hassan", gender: "female", subjects: ["Quran"], rating: 4.8 },
-  { name: "Musa Ibrahim", gender: "male", subjects: ["Tajweed"], rating: 4.7 },
-  { name: "Aisha Ali", gender: "female", subjects: ["Hifz"], rating: 4.9 }
-];
+  { name: "Yusuf Mohammed", gender: "male", subjects: ["Quran"], rating: 4.7 },
+  { name: "Abdul Rahman", gender: "male", subjects: ["Tajweed"], rating: 4.6 },
+  { name: "Omar Hassan", gender: "male", subjects: ["Hifz"], rating: 4.8 },
+  { name: "Bilal Ahmed", gender: "male", subjects: ["Quran"], rating: 4.5 },
+  { name: "Ibrahim Ali", gender: "male", subjects: ["Tafseer"], rating: 4.7 },
+  { name: "Khalid Umar", gender: "male", subjects: ["Tajweed"], rating: 4.6 },
+  { name: "Suleiman Yusuf", gender: "male", subjects: ["Hifz"], rating: 4.9 },
+  { name: "Hassan Ibrahim", gender: "male", subjects: ["Quran"], rating: 4.4 },
+  { name: "Mustafa Ali", gender: "male", subjects: ["Tafseer"], rating: 4.8 },
 
+  // 👩 FEMALE (10)
+  { name: "Fatima Hassan", gender: "female", subjects: ["Quran"], rating: 4.9 },
+  { name: "Aisha Ali", gender: "female", subjects: ["Hifz"], rating: 4.8 },
+  { name: "Zainab Mohammed", gender: "female", subjects: ["Tajweed"], rating: 4.7 },
+  { name: "Khadija Yusuf", gender: "female", subjects: ["Quran"], rating: 4.6 },
+  { name: "Maryam Ibrahim", gender: "female", subjects: ["Tafseer"], rating: 4.8 },
+  { name: "Hafsa Omar", gender: "female", subjects: ["Hifz"], rating: 4.9 },
+  { name: "Sumaya Ali", gender: "female", subjects: ["Tajweed"], rating: 4.5 },
+  { name: "Nafisa Hassan", gender: "female", subjects: ["Quran"], rating: 4.7 },
+  { name: "Safiya Mohammed", gender: "female", subjects: ["Tafseer"], rating: 4.6 },
+  { name: "Ruqayya Yusuf", gender: "female", subjects: ["Hifz"], rating: 4.8 }
+];
 // ==============================
 // BACKEND URL
 // ==============================
@@ -121,59 +139,73 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==============================
   // LANGUAGE DROPDOWN
  // ==============================
- function initLanguage() {
+ // ==============================
+// LANGUAGE DROPDOWN (FIXED)
+// ==============================
+function initLanguage() {
+  const langWrapper = document.querySelector(".lang-wrapper");
   const langToggle = document.getElementById("langToggle");
   const langMenu = document.getElementById("langMenu");
 
-  if (!langToggle || !langMenu) return;
+  if (!langWrapper || !langToggle || !langMenu) return;
 
+  // toggle dropdown
   langToggle.addEventListener("click", (e) => {
     e.stopPropagation();
-    langMenu.style.display =
-      langMenu.style.display === "block" ? "none" : "block";
+    langWrapper.classList.toggle("active");
   });
 
+  // close when clicking outside
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".lang-wrapper")) {
-      langMenu.style.display = "none";
+      langWrapper.classList.remove("active");
     }
   });
 
+  // language select
   document.querySelectorAll(".lang-dropdown p").forEach(item => {
     item.addEventListener("click", () => {
       const lang = item.dataset.lang;
+
       console.log("Language:", lang);
-      langMenu.style.display = "none";
+      localStorage.setItem("lang", lang);
+
+      langWrapper.classList.remove("active");
     });
   });
- }
+}
 
- // ==============================
- // THEME SYSTEM
- // ==============================
- function initTheme() {
+
+// ==============================
+// THEME SYSTEM (FIXED)
+// ==============================
+function initTheme() {
   const themeToggle = document.getElementById("themeToggle");
   if (!themeToggle) return;
 
-  const saved = localStorage.getItem("theme");
+  const savedTheme = localStorage.getItem("theme");
 
-  if (saved === "light") {
+  // apply saved theme on load
+  if (savedTheme === "light") {
     document.body.classList.add("light-mode");
-    themeToggle.classList.replace("fa-moon", "fa-sun");
+    themeToggle.classList.remove("fa-moon");
+    themeToggle.classList.add("fa-sun");
   }
 
   themeToggle.addEventListener("click", () => {
     const isLight = document.body.classList.toggle("light-mode");
 
-    themeToggle.classList.replace(
-      isLight ? "fa-moon" : "fa-sun",
-      isLight ? "fa-sun" : "fa-moon"
-    );
-
-    localStorage.setItem("theme", isLight ? "light" : "dark");
+    if (isLight) {
+      themeToggle.classList.remove("fa-moon");
+      themeToggle.classList.add("fa-sun");
+      localStorage.setItem("theme", "light");
+    } else {
+      themeToggle.classList.remove("fa-sun");
+      themeToggle.classList.add("fa-moon");
+      localStorage.setItem("theme", "dark");
+    }
   });
- }
-
+}
  // ==============================
   // RENDER
  // ==============================
@@ -216,32 +248,52 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==============================
   // LIST
   // ==============================
-  function renderList(data) {
+ let showAllUstaz = false;
+
+function renderList(data) {
   const container = document.getElementById("ustazList");
   if (!container) return;
 
-  container.innerHTML = data.map(u =>
-    `<div class="card">
-      <div class="avatar"></div>
-      <div class="info">
-        <div class="top">
-          <div class="name">${u.name}</div>
-          <div>⭐ ${u.rating}</div>
-        </div>
-        <div class="sub">${u.subjects.join(" • ")}</div>
-        <div class="actions">
-          <button class="btn chat" onclick="requireAuth(() => openChat('${u.name}'))">
-            Chat
-          </button>
-          <button class="btn view" onclick="requireAuth(() => openProfile('${u.name}'))">
-            View
-          </button>
-        </div>
-      </div>
-    </div>`
-  ).join("");
- }
+  const visibleData = showAllUstaz ? data : data.slice(0, 10);
 
+  container.innerHTML = `
+    ${visibleData.map(u =>
+      `<div class="card">
+        <div class="avatar"></div>
+        <div class="info">
+          <div class="top">
+            <div class="name">${u.name}</div>
+            <div>⭐ ${u.rating}</div>
+          </div>
+          <div class="sub">${u.subjects.join(" • ")}</div>
+          <div class="actions">
+            <button class="btn chat" onclick="requireAuth(() => openChat('${u.name}'))">
+              Chat
+            </button>
+            <button class="btn view" onclick="requireAuth(() => openProfile('${u.name}'))">
+              View
+            </button>
+          </div>
+        </div>
+      </div>`
+    ).join("")}
+
+    <div class="see-more-wrapper">
+      <span id="seeMoreBtn" class="see-more">
+        ${showAllUstaz ? "Show Less ↑" : "See More ↓"}
+      </span>
+    </div>
+  `;
+
+  // attach click after render
+  const btn = document.getElementById("seeMoreBtn");
+  if (btn) {
+    btn.onclick = () => {
+      showAllUstaz = !showAllUstaz;
+      renderList(data);
+    };
+  }
+}
   // ==============================
  // FILTERS
  // ==============================
@@ -306,38 +358,47 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
  // ELEMENTS
  // ===============================
- const overlay = document.getElementById("authOverlay");
- const loginBtn = document.querySelector(".login");
- const signupBtn = document.querySelector(".signup");
- const loginForm = document.getElementById("loginForm");
- const signupForm = document.getElementById("signupForm");
- const closeAuth = document.getElementById("closeAuth");
+const overlay = document.getElementById("authOverlay");
+const loginBtn = document.querySelector(".login");
+const signupBtn = document.querySelector(".signup");
+const loginForm = document.getElementById("loginForm");
+const signupForm = document.getElementById("signupForm");
+const closeAuth = document.getElementById("closeAuth");
+const goSignup = document.getElementById("goSignup");
+const goLogin = document.getElementById("goLogin");
+// ===============================
+// OPEN MODAL
+// ===============================
+if (loginBtn && overlay) {
+  loginBtn.onclick = () => {
+    overlay.style.display = "flex";
+    showLogin();
+  };
+}
 
- const goSignup = document.getElementById("goSignup");
- const goLogin = document.getElementById("goLogin");
+if (signupBtn && overlay) {
+  signupBtn.onclick = () => {
+    overlay.style.display = "flex";
+    showSignup();
+  };
+}
 
- // ===============================
- // OPEN MODAL
- // ===============================
- loginBtn.onclick = () => {
-  overlay.style.display = "flex";
-  showLogin();
- };
+// ===============================
+// CLOSE MODAL
+// ===============================
+if (closeAuth && overlay) {
 
- signupBtn.onclick = () => {
-  overlay.style.display = "flex";
-  showSignup();
- };
+  closeAuth.onclick = () => {
+    overlay.style.display = "none";
+  };
 
- // ===============================
- // CLOSE MODAL
- // ===============================
- closeAuth.onclick = () => overlay.style.display = "none";
+  overlay.onclick = (e) => {
+    if (e.target === overlay) {
+      overlay.style.display = "none";
+    }
+  };
 
- overlay.onclick = (e) => {
-  if (e.target === overlay) overlay.style.display = "none";
- };
-
+}
   // ===============================
   // SWITCH FORMS
  // ===============================
@@ -468,6 +529,13 @@ function signup() {
     experience: exp,
     gender: gender
   });
+  localStorage.setItem("tempRole", role);
+  localStorage.setItem("tempUser", JSON.stringify({
+  name,
+  phone,
+  subcity: subcityVal,
+  area: areaVal
+  }));
 
   // ===============================
   // SEND OTP (CORRECT PLACE)
@@ -544,7 +612,13 @@ function verifyOTP() {
      alert("OTP Verified!");
 
      // IMPORTANT: pass user state if needed
-     window.location.href = "welcome.html";
+     const role = localStorage.getItem("tempRole");
+
+     if (role === "ustaz") {
+      window.location.href = "ustaz_profile_setup.html";
+    } else {
+      window.location.href = "welcome.html";
+    }
 
     } else {
       alert(data.message || "Invalid OTP");
@@ -634,15 +708,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+// ==============================
+// WELCOME PAGE INIT
+// ==============================
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ONLY RUN ON welcome.html
+  if (!document.getElementById("welcomePage")) return;
+
+  console.log("WELCOME PAGE INIT");
+
+  // render cards
+  renderPopular();
+  renderList(ustazData);
+
+  // enable filters
+  initFilters();
+
+  // enable search
+  initSearch();
+
+});
  // ===============================
  // SECONDARY BUTTON HERE → SERVICE SECTION
  // ===============================
- document.getElementById("viewFieldsBtn").onclick = () => {
-  document.getElementById("services").scrollIntoView({
-    behavior: "smooth"
-  });
- };
+const viewFieldsBtn = document.getElementById("viewFieldsBtn");
 
+if (viewFieldsBtn) {
+  viewFieldsBtn.onclick = () => {
+    document.getElementById("services").scrollIntoView({
+      behavior: "smooth"
+    });
+  };
+}
  
  // ===============================
  // NAV ACTIVE LINK (FIXED)
@@ -749,3 +848,133 @@ function logout() {
   // redirect to login page
   window.location.href = "index.html"; // change if your login page is different
 }
+// ===============================
+// GLOBAL STEP CONTROL (UI)
+// ===============================
+let currentStep = 1;
+
+function nextStep() {
+  currentStep++;
+  updateUI();
+}
+
+function updateUI() {
+  const menu = document.getElementById("menuIcon");
+  const profile = document.getElementById("profileIcon");
+
+  if (!menu || !profile) return;
+
+  // hide UI until final step
+  if (currentStep < 5) {
+    menu.classList.add("hidden-ui");
+    profile.classList.add("hidden-ui");
+  } else {
+    menu.classList.remove("hidden-ui");
+    profile.classList.remove("hidden-ui");
+  }
+}
+
+window.onload = function () {
+  updateUI();
+};
+
+
+// ===============================
+// USTAZ PROFILE COMPLETION
+// ===============================
+function completeProfile() {
+
+  const user = JSON.parse(localStorage.getItem("tempUser"));
+  const role = localStorage.getItem("tempRole");
+
+  const bio = document.getElementById("bio")?.value || "";
+
+  // collect selected study fields
+  const subjects = Array.from(
+    document.querySelectorAll(".checkbox-group input[type='checkbox']:checked")
+  ).map(cb => cb.parentElement.innerText.trim());
+
+  const languages = document.querySelector("input[placeholder*='Arabic']")?.value || "";
+
+  const profileData = {
+    ...user,
+    role,
+    bio,
+    subjects,
+    languages
+  };
+
+  console.log("USTAZ PROFILE SAVED:", profileData);
+
+  // TODO: send to backend (PHP/MySQL later)
+
+  // cleanup temp storage
+  localStorage.removeItem("tempRole");
+  localStorage.removeItem("tempUser");
+
+  // reset UI step (optional safety)
+  currentStep = 5;
+  updateUI();
+
+  // redirect based on role
+  if (role === "ustaz") {
+    window.location.href = "ustaz-dashboard.html";
+  } else {
+    window.location.href = "welcome.html";
+  }
+}
+
+
+// ===============================
+// SIDE MENU (WORKING GLOBAL)
+// ===============================
+function toggleMenu() {
+  const menu = document.getElementById("sideMenu");
+  const overlay = document.getElementById("overlay");
+
+  if (!menu || !overlay) return;
+
+  menu.classList.toggle("show");
+  overlay.classList.toggle("show");
+}
+
+
+// ===============================
+// LOGOUT
+// ===============================
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+// ===============================
+// LOAD USTAZ DASHBOARD DATA
+// ===============================
+window.addEventListener("DOMContentLoaded", () => {
+
+  const role = localStorage.getItem("tempRole");
+
+  if (role === "ustaz") {
+    const user = JSON.parse(localStorage.getItem("tempUser"));
+
+    if (!user) return;
+
+    document.getElementById("ustazName").innerText =
+      user.firstName + " " + user.lastName;
+
+    document.getElementById("ustazBio").innerText =
+      user.bio || "No bio yet";
+
+    // subjects
+    const container = document.getElementById("ustazSubjects");
+
+    if (user.subjects && container) {
+      container.innerHTML = user.subjects
+        .map(s => `<span>${s}</span>`)
+        .join("");
+    }
+  }
+});
+document.addEventListener("DOMContentLoaded", () => {
+  initLanguage();
+  initTheme();
+});
