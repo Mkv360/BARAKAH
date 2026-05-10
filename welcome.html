@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BarakaLink - Welcome</title>
 
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="welcome.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -26,42 +27,62 @@
     Baraka<span>Link</span>
   </div>
 
-  <!-- PROFILE ICON (LEFT) -->
-  <div class="profile-icon">
-    <i class="fa-solid fa-user"></i>
+  <!-- ================= RIGHT CONTROLS ================= -->
+<div class="topbar-actions">
+
+  <!-- 🌍 LANGUAGE -->
+  <div class="lang-wrapper">
+    <i class="fa-solid fa-globe" id="langToggle"></i>
+
+    <div class="lang-dropdown" id="langMenu">
+      <p data-lang="en">English</p>
+      <p data-lang="am">Amharic</p>
+    </div>
   </div>
 
+  <!-- 🌙 THEME -->
+  <i class="fa-solid fa-moon" id="themeToggle"></i>
+
+</div>
   
 
   
 </div>
 
 <!-- ================= SIDE MENU ================= -->
-<div id="sideMenu" class="side-menu">
+<!-- ================= SIDE MENU (WELCOME PAGE) ================= -->
+<div class="side-menu" id="sideMenu">
 
-  <div class="side-header">
-    <h3>BarakaLink</h3>
-    <i class="fa-solid fa-xmark" onclick="closeSideMenu()"></i>
+  <!-- PROFILE HEADER (NEW) -->
+  <div class="menu-profile">
+
+    <div class="menu-avatar">
+      <img src="https://via.placeholder.com/60" id="menuAvatar">
+    </div>
+
+    <div class="menu-user-info">
+      <h4 id="menuName">User Name</h4>
+      <p id="menuRole">Parent Account</p>
+    </div>
+
   </div>
 
-  <a href="#home"><i class="fa-solid fa-house"></i> Home</a>
-  <a href="#about"><i class="fa-solid fa-circle-info"></i> About</a>
-  <a href="#contact"><i class="fa-solid fa-envelope"></i> Contact</a>
-  <a href="#support"><i class="fa-solid fa-headset"></i> Support</a>
+  <hr class="menu-divider">
 
-  <button class="logout-btn" onclick="logout()">
-    <i class="fa-solid fa-right-from-bracket"></i> Logout
-  </button>
+  <!-- NAV LINKS -->
+  <a href="welcome.html"><i class="fa-solid fa-house"></i> Home</a>
+  <a href="#"><i class="fa-solid fa-user"></i> My Profile</a>
+  <a href="#"><i class="fa-solid fa-book"></i> My Requests</a>
+  <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+
+  <button class="logout-btn" onclick="logout()">Logout</button>
 
 </div>
-
 <!-- OVERLAY -->
 <div id="overlay" onclick="closeSideMenu()"></div>
 
 <!-- ================= HERO WELCOME ================= -->
 <section class="welcome">
-
-  <h1>Welcome Back 👋</h1>
 
   <p>
     Continue your Quran learning journey with trusted Ustaz near you.
@@ -91,35 +112,51 @@
 
 </section>
 
-<!-- ================= SECTION ================= -->
-<section class="section">
+
+
+  <!-- SEARCH -->
+<div class="search">
+  <input type="text" id="searchInput" placeholder="Search ustaz or subject...">
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <div class="filter active">All</div>
+  <div class="filter">Male</div>
+  <div class="filter">Female</div>
+  <div class="filter">Hifz</div>
+  <div class="filter">Tajweed</div>
+</div>
+
+<!-- POPULAR -->
+<div class="section" id="popularSection">
 
   <div class="section-header">
-    <h2>🔥 Recommended for You</h2>
-    <span>See all</span>
+    <h3>Popular Near You</h3>
+    <span class="see-all">See all</span>
   </div>
 
-  <div class="cards">
+  <div class="popular-wrapper">
 
-    <div class="card">
-      <div class="card-avatar"></div>
-      <div class="card-info">
-        <h3>Ustaz Ahmed Ali</h3>
-        <p>Tajweed • 4.9 ⭐</p>
-      </div>
-      <button>View</button>
-    </div>
+    <button class="scroll-btn left" onclick="scrollPopular(-1)">
+      ‹
+    </button>
 
-    <div class="card">
-      <div class="card-avatar"></div>
-      <div class="card-info">
-        <h3>Ustaza Fatima</h3>
-        <p>Quran • 4.8 ⭐</p>
-      </div>
-      <button>View</button>
-    </div>
+    <div class="popular" id="popularList"></div>
+
+    <button class="scroll-btn right" onclick="scrollPopular(1)">
+      ›
+    </button>
 
   </div>
+
+</div>
+
+<!-- USTAZ LIST -->
+<div class="section">
+  <h3>Available Ustaz</h3>
+  <div id="ustazList"></div>
+</div>
 
 </section>
 
